@@ -18,4 +18,4 @@ from scipy import stats
 import scipy.stats as sts
 import scipy.stats as sem
 
-
+print("Buenoh dia")
