@@ -4,22 +4,28 @@ from heapq import heappop, heappush
 from itertools import count
 from networkx.algorithms.shortest_paths.weighted import _weight_function
 
+# Implementacion del algoritmo A*
 def astar_path(G, source, target, heuristic=None, weight="weight"):
+
+    # Se verifica que los nodos esten en el grafo
     if source not in G or target not in G:
         msg = f"Either source {source} or target {target} is not in G"
         raise nx.NodeNotFound(msg)
-
+    
+    # Se verifica que el peso sea positivo
     if heuristic is None:
         def heuristic(u, v):
             return 0
+
 
     push = heappush
     pop = heappop
     weight = _weight_function(G, weight)
 
-    G_succ = G._adj  # For speed-up (and works for both directed and undirected graphs)
+    G_succ = G._adj  
 
-    c = count()
+#c++ 
+    c = count() 
     queue = [(0, next(c), source, 0, None)]
     enqueued = {}
     explored = {}
