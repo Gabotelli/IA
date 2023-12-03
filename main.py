@@ -9,9 +9,9 @@ def astar_path(G, source, target, heuristic=None, weight="weight"):
 
     # Se verifica que los nodos esten en el grafo
     if source not in G or target not in G:
-        msg = f"Either source {source} or target {target} is not in G"
+        msg = f"El nodo origen: {source} o el nodo objetivo: {target} no estan en el grafo."
         raise nx.NodeNotFound(msg)
-    
+
     # Se verifica que el peso sea positivo
     if heuristic is None:
         def heuristic(u, v):
@@ -24,13 +24,13 @@ def astar_path(G, source, target, heuristic=None, weight="weight"):
 
     G_succ = G._adj  
 
-#c++ 
     c = count() 
     queue = [(0, next(c), source, 0, None)]
     enqueued = {}
     explored = {}
 
     while queue:
+       
         _, __, curnode, dist, parent = pop(queue)
 
         if curnode == target:
@@ -52,8 +52,10 @@ def astar_path(G, source, target, heuristic=None, weight="weight"):
 
         explored[curnode] = parent
 
+        #Recorremos la tabla de adyacencia del nodo actual
         for neighbor, w in G_succ[curnode].items():
             cost = weight(curnode, neighbor, w)
+            #Los nodos que no estan conectados no se consideran
             if cost is None:
                 continue
             ncost = dist + cost
@@ -66,7 +68,7 @@ def astar_path(G, source, target, heuristic=None, weight="weight"):
             enqueued[neighbor] = ncost, h
             push(queue, (ncost + h, next(c), neighbor, ncost, curnode))
 
-    raise nx.NetworkXNoPath(f"Node {target} not reachable from {source}")
+    raise nx.NetworkXNoPath(f"El nodo: {target} no se puede alcanzar desde: {source}")
 """make an openlist containing only the starting node
    make an empty closed list
    while (the destination node has not been reached):
