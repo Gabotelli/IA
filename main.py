@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import sympy as sy
 from Aestrella import astar_path
 
 def dist(a, b):
@@ -9,22 +10,71 @@ def dist(a, b):
 
 #create a node class that has two attribute, its name and weight, both are passed in the constructor, it has a constructor and a getter for the weight and another for the name
 G = nx.Graph()
-G.add_node("A", weight=1)
-G.add_node("B", weight=5)
-G.add_node("C", weight=1)
-G.add_node("D", weight=3)
-G.add_node("E", weight=1)
-G.add_node("F", weight=0)
-G.add_node("G", weight=2)
-G.add_edge("A", "C", weight=1)
-G.add_edge("A", "B", weight=10)
-G.add_edge("B", "E", weight=5)
-G.add_edge("E", "F", weight=1)
-G.add_edge("F", "D", weight=3)
-G.add_edge("A", "F", weight=2)
-G.add_edge("C", "D", weight=0)
-G.add_edge("E", "G", weight=4)
-G.add_edge("G", "D", weight=5)
+
+#linea A roja
+G.add_node("Perrache", linea = ["A"])
+G.add_node("Ampère Victor Hugo", linea = ["A"])
+G.add_node("Cordeliers", linea = ["A"])
+G.add_node("Hôtel De Ville - Louis Pradel", linea = ["A", "C"])
+G.add_node("Foch", linea = ["A"])
+G.add_node("Masséna", linea = ["A"])
+G.add_node("République Villeurbanne", linea = ["A"])
+G.add_node("Gratte-Ciel", linea = ["A"])
+G.add_node("Flachet", linea = ["A"])
+G.add_node("Cusset", linea = ["A"])
+G.add_node("Laurent Bonnevay", linea = ["A"])
+G.add_node("Vaulx-En-Velin La Soie", linea = ["A"])
+
+#linea B azul
+G.add_node("Oullins Gare", linea = ["B"])
+G.add_node("Stade De Gerland", linea = ["B"])
+G.add_node("Debourg", linea = ["B"])
+G.add_node("Place Jean Jaurès", linea = ["B"])
+G.add_node("Jean Macé", linea = ["B"])
+G.add_node("Saxe Gambetta", linea = ["B"])
+G.add_node("Place Guichard Bourse Du Travail", linea = ["B"])
+G.add_node("Gare Part-Dieu Vivier Merle", linea = ["B"])
+G.add_node("Brotteaux", linea = ["B"])
+G.add_node("Charpennes Charles Hernu", linea = ["B", "A"])
+
+#linea C naranja
+G.add_node("Cuire", linea = ["C"])
+G.add_node("Hénon", linea = ["C"])
+G.add_node("Croix-Rousse", linea = ["C"])
+G.add_node("Croix-Paquet", linea = ["C"])
+
+#linea D
+G.add_node("Gare de Vaise", linea = ["D"])
+G.add_node("Valmy", linea = ["D"])
+G.add_node("Gorge de Loup", linea = ["D"])
+G.add_node("Vieux Lyon Cathedrale St. Jean", linea = ["D"])
+G.add_node("Bellecour", linea = ["A","D"])
+G.add_node("Guillotière", linea = ["D"])
+G.add_node("Saxe Gambetta", linea = ["B", "D"])
+G.add_node("Garibaldi", linea = ["D"])
+G.add_node("Sans-Souci", linea = ["D"])
+G.add_node("Monplalsir - Lumière", linea = ["D"])
+G.add_node("Grange Blanche", linea = ["D"])
+G.add_node("Laennec", linea = ["D"])
+G.add_node("Mermoz Pinel", linea = ["D"])
+G.add_node("Parilly", linea = ["D"])
+G.add_node("Garre de Venissieux", linea = ["D"])
+
+#linea B
+
+
+#edge = arista 
+G.add_edge("A", "B", weight = 30)
+G.add_edge("B", "E", weight = 30)
+G.add_edge("E", "F", weight = 30)
+G.add_edge("F", "D", weight = 30)
+G.add_edge("A", "F", weight = 30)
+G.add_edge("C", "D", weight = 30)
+G.add_edge("E", "G", weight = 30)
+G.add_edge("G", "D", weight = 30)
+
+#create 2-D matrix of zeros with sympy
+matrix = sy.zeros(30, 30)
 
 labels = {n: str(n) + ';   ' + str(G.nodes[n]['weight']) for n in G.nodes}
 """G = nx.grid_graph(dim=[3, 3])  # nodes are two-tuples (x,y)

@@ -4,7 +4,6 @@ Created on Sat Dec  2 19:07:23 2023
 
 @author: David
 """
-
 import tkinter as tk
 from tkinter import Toplevel, Label, Radiobutton, StringVar, Entry, Button
 from PIL import Image, ImageTk
@@ -122,12 +121,12 @@ class MapApp:
         if self.origin_coordinates is None:
             # Si aún no se ha seleccionado el origen, hazlo
             self.origin_coordinates = (x, y)
-            self.canvas.create_oval(x-5, y-5, x+5, y+5, fill="blue", outline="blue")
+            self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="blue", outline="blue")
             self.origin_label.config(text=f"Origen: ({x}, {y})")
         elif self.destination_coordinates is None:
             # Si ya se ha seleccionado el origen, selecciona el destino
             self.destination_coordinates = (x, y)
-            self.canvas.create_oval(x-5, y-5, x+5, y+5, fill="red", outline="red")
+            self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", outline="red")
             self.destination_label.config(text=f"Destino: ({x}, {y})")
 
             # Preguntar al usuario sobre sus preferencias
@@ -138,14 +137,12 @@ class MapApp:
         origin_text = self.origin_entry.get()
         destination_text = self.destination_entry.get()
 
-        try:
-            self.origin_coordinates = tuple(map(int, origin_text.split(',')))
-            self.destination_coordinates = tuple(map(int, destination_text.split(',')))
+        # Mostrar las coordenadas ingresadas manualmente
+        print(f"Origen (manual): {origin_text}")
+        print(f"Destino (manual): {destination_text}")
 
-            # Continuar con otras acciones después de ingresar manualmente
-            self.ask_user_preferences()
-        except ValueError:
-            print("Error al convertir las coordenadas a números. Asegúrate de ingresar números separados por comas.")
+        # Continuar con otras acciones después de ingresar manualmente
+        self.ask_user_preferences()
 
     def ask_user_preferences(self):
         # Crear una ventana emergente para la pregunta
@@ -176,7 +173,8 @@ class MapApp:
         time_button = Radiobutton(preferences_window, text="Tiempo", variable=preference_var, value="Tiempo")
         time_button.pack()
 
-        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=preference_var, value="Transbordos")
+        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=preference_var,
+                                       value="Transbordos")
         transfers_button.pack()
 
         # Botón para confirmar la elección
@@ -186,9 +184,27 @@ class MapApp:
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Puedes implementar la lógica de tu aplicación en esta función.
-        print(f"Origen: {self.origin_coordinates}")
-        print(f"Destino: {self.destination_coordinates}")
+        if self.origin_coordinates is not None and self.destination_coordinates is not None:
+            print(f"Origen: {self.origin_coordinates}")
+            print(f"Destino: {self.destination_coordinates}")
+        else:
+            print("No se han seleccionado coordenadas en el mapa.")
         print("Continuar con otras acciones...")
+    
+        # Crear una ventana emergente para mostrar un texto predeterminado
+        text_entry_window = Toplevel(self.root)
+        text_entry_window.title("Ruta a Seguir")
+    
+        # Etiqueta con el texto predeterminado
+        text_label = Label(text_entry_window, text="Ruta a seguir:", font=("Arial", 14), bg="white")
+        text_label.pack(pady=10)
+    
+        # Texto predeterminado
+        default_text = "Aquí puedes mostrar la ruta a seguir."
+        text_content_label = Label(text_entry_window, text=default_text, font=("Arial", 12))
+        text_content_label.pack(pady=10)
+
+
 
 # URL de la imagen que deseas abrir (reemplaza con tu URL)
 map_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lyon_-_Metro_network_map.png/600px-Lyon_-_Metro_network_map.png"
@@ -199,5 +215,3 @@ app = MapApp(root, map_url)
 
 # Iniciar el bucle principal
 root.mainloop()
-
-
