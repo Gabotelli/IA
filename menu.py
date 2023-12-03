@@ -184,14 +184,17 @@ class MapApp:
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Puedes implementar la lógica de tu aplicación en esta función.
+        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), "No transbordos")
+        ini_instance.ini()
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print(f"Origen: {self.origin_coordinates}")
             print(f"Destino: {self.destination_coordinates}")
+
         else:
             print("No se han seleccionado coordenadas en el mapa.")
         print("Continuar con otras acciones...")
     
-        # Crear una ventana emergente para mostrar un texto predeterminado
+        """# Crear una ventana emergente para mostrar un texto predeterminado
         text_entry_window = Toplevel(self.root)
         text_entry_window.title("Ruta a Seguir")
     
@@ -202,7 +205,7 @@ class MapApp:
         # Texto predeterminado
         default_text = "Aquí puedes mostrar la ruta a seguir."
         text_content_label = Label(text_entry_window, text=default_text, font=("Arial", 12))
-        text_content_label.pack(pady=10)
+        text_content_label.pack(pady=10)"""
 
 
 
