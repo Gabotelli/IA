@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import Toplevel, Label, Radiobutton, StringVar, Entry, Button
 from PIL import Image, ImageTk
 import requests
-
+import ini
 class MapApp:
     def __init__(self, root, map_url):
         self.root = root

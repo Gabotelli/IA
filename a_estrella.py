@@ -6,8 +6,35 @@ import networkx as nx
 from networkx.algorithms.shortest_paths.weighted import _weight_function
 
 
+def a_star(graph, start, goal, heuristic, modoObjetivo = None):
+    open_list = []
+    heappush(open_list, (0, start))
+    g_costs = {start: 0}
+    came_from = {start: None}
+
+    while open_list:
+        _, current = heappop(open_list)
+
+        if current == goal:
+            path = []
+            while current is not None:
+                path.append(current)
+                current = came_from[current]
+            path.reverse()
+            return path
+
+        for neighbor in graph.neighbors(current):
+            tentative_g_cost = g_costs[current] + graph.edges[current, neighbor]['weight']
+            if neighbor not in g_costs or tentative_g_cost < g_costs[neighbor]:
+                g_costs[neighbor] = tentative_g_cost
+                f_cost = tentative_g_cost + heuristic(neighbor, goal, modoObjetivo)
+                heappush(open_list, (f_cost, neighbor))
+                came_from[neighbor] = current
+
+    return None
+
 # Implementacion del algoritmo A*
-def a_estrella_ruta(G, source, target, heuristic=None, weight="weight"):
+def a_estrella_ruta(G, source, target, heuristic=None, weight="weight", modoObjetivo = None):
 
     # Se verifica que los nodos esten en el grafo
     if source not in G or target not in G:
@@ -62,7 +89,7 @@ def a_estrella_ruta(G, source, target, heuristic=None, weight="weight"):
                 if qcost <= ncost:
                     continue
             else:
-                h = heuristic(neighbor, target)
+                h = heuristic(neighbor, target, modoObjetivo)
             enqueued[neighbor] = ncost, h
             c += 1
             heappush(queue, (ncost + h, c, neighbor, ncost, curnode))
