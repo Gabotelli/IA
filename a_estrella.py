@@ -7,7 +7,7 @@ from networkx.algorithms.shortest_paths.weighted import _weight_function
 
 
 # Implementacion del algoritmo A*
-def astar_path(G, source, target, heuristic=None, weight="weight"):
+def a_estrella_ruta(G, source, target, heuristic=None, weight="weight"):
 
     # Se verifica que los nodos esten en el grafo
     if source not in G or target not in G:
