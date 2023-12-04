@@ -20,6 +20,11 @@ class Ini:
                 return tiempo + 1000
             elif (m == "Tiempo"):
                 return dist + 5
+            #Añadir tabla de tiempo minimo entre todos los hijos y el objetivo
+            #Evaluar linea actual para ver si hay que esperar en estacion
+            #Evaluar si hay que cambiar de linea
+            #Evaluar el modo
+            #nodoHijo, nodoPadre, nodoObjetivo, lineaActual, modoObjetivo
         
         
         G = nx.Graph()
