@@ -12,13 +12,13 @@ class Ini:
         self.tiempoTransbordo = tiempoTransbordo
 
     def ini(self):
-        def heuristic(nodoPadre, nodoHijo, lineaActual):
-            (x1, y1) = G.nodes[nodoPadre]['pos']
+        def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual):
+            (x1, y1) = G.nodes[nodoObjetivo]['pos']
             (x2, y2) = G.nodes[nodoHijo]['pos']
             dist  = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
 
             #Calculamos el tiempo con el factor 0.339 unidades/min
-            tiempo = dist * 0.339
+            tiempo = dist / 0.339
 
             lineaHijo = G.nodes[nodoHijo]['linea']
             if lineaActual not in lineaHijo:
@@ -46,6 +46,8 @@ class Ini:
         G.add_node("Cusset", linea = ["A"], pos = (4.120, 4.635))
         G.add_node("Laurent Bonnevay Astroballe", linea = ["A"], pos = (4.500, 4.500))
         G.add_node("Vaulx-En-Velin La Soie", linea = ["A"], pos = (5.043, 4.327))
+
+        A = ["Perrache","Ampère Victor Hugo","Cordeliers"]
 
         #linea B azul
         G.add_node("Oullins Gare", linea = ["B"], pos = (0.901, 0.921))
@@ -81,51 +83,51 @@ class Ini:
         G.add_node("Parilly", linea = ["D"], pos = (3.690,1.313))
         G.add_node("Garre de Venissieux", linea = ["D"], pos = (3.690,0.222))
 
-        #edge = arista 
-        G.add_edge("Gare de Vaise", "Valmy", weight = heuristic("Gare de Vaise", "Valmy"))
-        G.add_edge("Valmy", "Gorge de Loup", weight = heuristic("Valmy", "Gorge de Loup"))
-        G.add_edge("Gorge de Loup", "Vieux Lyon\nCathedrale St. Jean", weight = heuristic("Gorge de Loup", "Vieux Lyon\nCathedrale St. Jean"))
-        G.add_edge("Vieux Lyon\nCathedrale St. Jean", "Bellecour", weight = heuristic("Vieux Lyon\nCathedrale St. Jean", "Bellecour"))
-        G.add_edge("Bellecour", "Guillotière", weight = heuristic("Bellecour", "Guillotière"))
-        G.add_edge("Guillotière", "Saxe Gambetta", weight = heuristic("Guillotière", "Saxe Gambetta"))
-        G.add_edge("Saxe Gambetta", "Garibaldi", weight = heuristic("Saxe Gambetta", "Garibaldi"))
-        G.add_edge("Garibaldi", "Sans-Souci", weight = heuristic("Garibaldi", "Sans-Souci"))
-        G.add_edge("Sans-Souci", "Monplalsir - Lumière", weight = heuristic("Sans-Souci", "Monplalsir - Lumière"))
-        G.add_edge("Monplalsir - Lumière", "Grange Blanche", weight = heuristic("Monplalsir - Lumière", "Grange Blanche"))
-        G.add_edge("Grange Blanche", "Laennec", weight = heuristic("Grange Blanche", "Laennec"))
-        G.add_edge("Laennec", "Mermoz Pinel", weight = heuristic("Laennec", "Mermoz Pinel"))
-        G.add_edge("Mermoz Pinel", "Parilly", weight = heuristic("Mermoz Pinel", "Parilly"))
-        G.add_edge("Parilly", "Garre de Venissieux", weight = heuristic("Parilly", "Garre de Venissieux"))
-        G.add_edge("Cuire", "Hénon", weight = heuristic("Cuire", "Hénon"))
-        G.add_edge("Hénon", "Croix-Rousse", weight = heuristic("Hénon", "Croix-Rousse"))
-        G.add_edge("Croix-Rousse", "Croix-Paquet", weight = heuristic("Croix-Rousse", "Croix-Paquet"))
-        G.add_edge("Croix-Paquet", "Hotel De Ville\nLouis Pradel", weight = heuristic("Croix-Paquet", "Hotel De Ville\nLouis Pradel"))
-        G.add_edge("Charpennes\nCharles Hernu", "Brotteaux", weight = heuristic("Charpennes\nCharles Hernu", "Brotteaux"))
-        G.add_edge("Brotteaux", "Gare Part-Dieu\nVivier Merle", weight = heuristic("Brotteaux", "Gare Part-Dieu\nVivier Merle"))
-        G.add_edge("Gare Part-Dieu\nVivier Merle", "Place Guichard Bourse\nDu Travail", weight = heuristic("Gare Part-Dieu\nVivier Merle", "Place Guichard Bourse\nDu Travail"))
-        G.add_edge("Place Guichard Bourse\nDu Travail", "Saxe Gambetta", weight = heuristic("Place Guichard Bourse\nDu Travail", "Saxe Gambetta"))
-        G.add_edge("Saxe Gambetta", "Jean Macé", weight = heuristic("Saxe Gambetta", "Jean Macé"))
-        G.add_edge("Jean Macé", "Place Jean Jaurès", weight = heuristic("Jean Macé", "Place Jean Jaurès"))
-        G.add_edge("Place Jean Jaurès", "Debourg", weight = heuristic("Place Jean Jaurès", "Debourg"))
-        G.add_edge("Debourg", "Stade De Gerland", weight = heuristic("Debourg", "Stade De Gerland"))
-        G.add_edge("Stade De Gerland", "Oullins Gare", weight = heuristic("Stade De Gerland", "Oullins Gare"))
-        G.add_edge("Perrache", "Ampère Victor Hugo", weight = heuristic("Perrache", "Ampère Victor Hugo"))
-        G.add_edge("Ampère Victor Hugo", "Bellecour", weight = heuristic("Ampère Victor Hugo", "Bellecour"))
-        G.add_edge("Bellecour", "Cordeliers", weight = 30)
-        G.add_edge("Cordeliers", "Hotel De Ville\nLouis Pradel", weight = heuristic("Cordeliers", "Hotel De Ville\nLouis Pradel"))
-        G.add_edge("Hotel De Ville\nLouis Pradel", "Foch", weight = heuristic("Hotel De Ville\nLouis Pradel", "Foch"))
-        G.add_edge("Foch", "Masséna", weight = heuristic("Foch", "Masséna"))
-        G.add_edge("Masséna", "Charpennes\nCharles Hernu", weight = heuristic("Masséna", "Charpennes\nCharles Hernu"))
-        G.add_edge("Charpennes\nCharles Hernu", "République Villeurbanne", weight = heuristic("Charpennes\nCharles Hernu", "République Villeurbanne"))
-        G.add_edge("République Villeurbanne", "Gratte-Ciel", weight = heuristic("République Villeurbanne", "Gratte-Ciel"))
-        G.add_edge("Gratte-Ciel", "Flachet", weight = heuristic("Gratte-Ciel", "Flachet"))
-        G.add_edge("Flachet", "Cusset", weight = heuristic("Flachet", "Cusset"))
-        G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = heuristic("Cusset", "Laurent Bonnevay Astroballe"))
-        G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = heuristic("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie"))
+        #edge = arista
+        G.add_edge("Gare de Vaise", "Valmy", weight = 2) #pon el peso en weight en el resto
+        G.add_edge("Valmy", "Gorge de Loup", weight = 2)
+        G.add_edge("Gorge de Loup", "Vieux Lyon\nCathedrale St. Jean", weight = 2)
+        G.add_edge("Vieux Lyon\nCathedrale St. Jean", "Bellecour", weight = 2)
+        G.add_edge("Bellecour", "Guillotière", weight = 1)
+        G.add_edge("Guillotière", "Saxe Gambetta", weight = 2)
+        G.add_edge("Saxe Gambetta", "Garibaldi", weight = 1)
+        G.add_edge("Garibaldi", "Sans-Souci", weight = 2)
+        G.add_edge("Sans-Souci", "Monplalsir - Lumière", weight = 1)
+        G.add_edge("Monplalsir - Lumière", "Grange Blanche", weight = 2)
+        G.add_edge("Grange Blanche", "Laennec", weight = 1)
+        G.add_edge("Laennec", "Mermoz Pinel", weight = 2)
+        G.add_edge("Mermoz Pinel", "Parilly", weight = 2)
+        G.add_edge("Parilly", "Garre de Venissieux", weight = 2)
+        G.add_edge("Cuire", "Hénon", weight = 2)
+        G.add_edge("Hénon", "Croix-Rousse", weight = 3)
+        G.add_edge("Croix-Rousse", "Croix-Paquet", weight = 2)
+        G.add_edge("Croix-Paquet", "Hotel De Ville\nLouis Pradel", weight = 2)
+        G.add_edge("Charpennes\nCharles Hernu", "Brotteaux", weight = 1)
+        G.add_edge("Brotteaux", "Gare Part-Dieu\nVivier Merle", weight = 1)
+        G.add_edge("Gare Part-Dieu\nVivier Merle", "Place Guichard Bourse\nDu Travail", weight = 2)
+        G.add_edge("Place Guichard Bourse\nDu Travail", "Saxe Gambetta", weight = 2)
+        G.add_edge("Saxe Gambetta", "Jean Macé", weight = 2)
+        G.add_edge("Jean Macé", "Place Jean Jaurès", weight = 2)
+        G.add_edge("Place Jean Jaurès", "Debourg", weight = 3)
+        G.add_edge("Debourg", "Stade De Gerland", weight = 1)
+        G.add_edge("Stade De Gerland", "Oullins Gare", weight = 2)
+        G.add_edge("Perrache", "Ampère Victor Hugo", weight = 1)
+        G.add_edge("Ampère Victor Hugo", "Bellecour", weight = 1)
+        G.add_edge("Bellecour", "Cordeliers", weight = 2)
+        G.add_edge("Cordeliers", "Hotel De Ville\nLouis Pradel", weight = 1)
+        G.add_edge("Hotel De Ville\nLouis Pradel", "Foch", weight = 2)
+        G.add_edge("Foch", "Masséna", weight = 1)
+        G.add_edge("Masséna", "Charpennes\nCharles Hernu", weight = 2)
+        G.add_edge("Charpennes\nCharles Hernu", "République Villeurbanne", weight = 1)
+        G.add_edge("République Villeurbanne", "Gratte-Ciel", weight = 2)
+        G.add_edge("Gratte-Ciel", "Flachet", weight = 1)
+        G.add_edge("Flachet", "Cusset", weight = 2)
+        G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = 1)
+        G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = 1)
 
         #labels = {n: str(n) + ';   ' + str(G.nodes[n]['weight']) for n in G.nodes}
-        """G = nx.grid_graph(dim=[3, 3])  # nodes are two-tuples (x,y)
-        nx.set_edge_attributes(G, {e: e[1][0] * 2 for e in G.edges()}, "cost")"""
+        #G = nx.grid_graph(dim=[3, 3])  # nodes are two-tuples (x,y)
+        #nx.set_edge_attributes(G, {e: e[1][0] * 2 for e in G.edges()}, "cost")
         #path = a_estrella_ruta(G, "Gare de Vaise", "Brotteaux", heuristic, weight="weight", modoObjetivo = "Tiempo")
         path = a_star(G, self.inicio, self.fin, heuristic, modoObjetivo = self.modoObjetivo)
         #length = nx.astar_path_length(G, (0, 0), (2, 2), heuristic=dist, weight="cost")

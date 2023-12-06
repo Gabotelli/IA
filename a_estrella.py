@@ -7,14 +7,14 @@ from networkx.algorithms.shortest_paths.weighted import _weight_function
 
 
 def a_star(graph, start, goal, heuristic, modoObjetivo = None):
-    open_list = []
-    heappush(open_list, (0, start))
+    open_list = [(0, None, start)]
     g_costs = {start: 0}
     came_from = {start: None}
 
     while open_list:
-        _, current = heappop(open_list)
-
+        #Elige el nodo con el coste menor
+        _, lineaActual, current = heappop(open_list)
+        
         if current == goal:
             path = []
             while current is not None:
@@ -24,11 +24,15 @@ def a_star(graph, start, goal, heuristic, modoObjetivo = None):
             return path
 
         for neighbor in graph.neighbors(current):
+            #Calculamos el coste de ir desde el nodo actual hasta el vecino
             tentative_g_cost = g_costs[current] + graph.edges[current, neighbor]['weight']
+
+            #Miramos si el camino actual es mejor que el anterior
             if neighbor not in g_costs or tentative_g_cost < g_costs[neighbor]:
                 g_costs[neighbor] = tentative_g_cost
-                f_cost = tentative_g_cost + heuristic(neighbor, goal, modoObjetivo)
-                heappush(open_list, (f_cost, neighbor))
+                f_cost = tentative_g_cost + heuristic(neighbor, goal, current, lineaActual)
+                lineaActual = set(neighbor[1]) & set(current[1]) #esta linea es GOD
+                heappush(open_list, (f_cost, lineaActual,neighbor))
                 came_from[neighbor] = current
 
     return None

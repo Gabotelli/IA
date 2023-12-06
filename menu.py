@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Dec  2 19:07:23 2023
-
-@author: David
-"""
 import tkinter as tk
 from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
 
