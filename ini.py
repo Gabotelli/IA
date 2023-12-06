@@ -1,32 +1,37 @@
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
+
 from a_estrella import a_estrella_ruta, a_star
 
+
 class Ini:
-    def __init__(self, inicio, fin, modoObjetivo):
+    def __init__(self, inicio, fin, modoObjetivo, tiempoTransbordo = 5):
         self.inicio = inicio
         self.fin = fin
         self.modoObjetivo = modoObjetivo
+        self.tiempoTransbordo = tiempoTransbordo
 
     def ini(self):
-        def heuristic(u, v, m = None):
-            (x1, y1) = G.nodes[u]['pos']
-            (x2, y2) = G.nodes[v]['pos']
+        def heuristic(nodoPadre, nodoHijo, lineaActual):
+            (x1, y1) = G.nodes[nodoPadre]['pos']
+            (x2, y2) = G.nodes[nodoHijo]['pos']
             dist  = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-            tiempo = dist / 30
-            if (m == None):
-                return dist
-            elif (m == "No transbordos"):
-                return tiempo + 1000
-            elif (m == "Tiempo"):
-                return dist + 5
+
+            #Calculamos el tiempo con el factor 0.339 unidades/min
+            tiempo = dist * 0.339
+
+            lineaHijo = G.nodes[nodoHijo]['linea']
+            if lineaActual not in lineaHijo:
+                tiempo = tiempo + 1000 if self.modoObjetivo == "No transbordos" else tiempo + self.tiempoTransbordo
+
+            return tiempo
             #Añadir tabla de tiempo minimo entre todos los hijos y el objetivo
             #Evaluar linea actual para ver si hay que esperar en estacion
             #Evaluar si hay que cambiar de linea
             #Evaluar el modo
             #nodoHijo, nodoPadre, nodoObjetivo, lineaActual, modoObjetivo
-        
-        
+
+
         G = nx.Graph()
         #linea A roja
         G.add_node("Perrache", linea = ["A"], pos = (1.339, 3.366))
@@ -118,7 +123,6 @@ class Ini:
         G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = heuristic("Cusset", "Laurent Bonnevay Astroballe"))
         G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = heuristic("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie"))
 
-
         #labels = {n: str(n) + ';   ' + str(G.nodes[n]['weight']) for n in G.nodes}
         """G = nx.grid_graph(dim=[3, 3])  # nodes are two-tuples (x,y)
         nx.set_edge_attributes(G, {e: e[1][0] * 2 for e in G.edges()}, "cost")"""
@@ -139,8 +143,9 @@ class Ini:
         plt.ylim(0, 7)
         plt.show()
 
-        import matplotlib.animation as animation
         import time
+
+        import matplotlib.animation as animation
 
         def draw_path_animation(graph, source, target, path, label = None):
             pos = nx.get_node_attributes(graph, 'pos')  # You can use a different layout depending on your graph structure

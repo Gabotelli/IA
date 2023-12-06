@@ -5,10 +5,14 @@ Created on Sat Dec  2 19:07:23 2023
 @author: David
 """
 import tkinter as tk
-from tkinter import Toplevel, Label, Radiobutton, StringVar, Entry, Button
-from PIL import Image, ImageTk
+from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
+
 import requests
+from PIL import Image, ImageTk
+
 import ini
+
+
 class MapApp:
     def __init__(self, root, map_url):
         self.root = root
@@ -209,7 +213,7 @@ class MapApp:
 
 
 
-# URL de la imagen que deseas abrir (reemplaza con tu URL)
+# Imagen del metro de Lyon
 map_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lyon_-_Metro_network_map.png/600px-Lyon_-_Metro_network_map.png"
 
 # Crear la ventana principal de la aplicación
