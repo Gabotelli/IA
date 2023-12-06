@@ -47,7 +47,8 @@ class Ini:
         G.add_node("Laurent Bonnevay Astroballe", linea = ["A"], pos = (4.500, 4.500))
         G.add_node("Vaulx-En-Velin La Soie", linea = ["A"], pos = (5.043, 4.327))
 
-        A = ["Perrache","Ampère Victor Hugo","Cordeliers"]
+        A = ["Perrache","Ampère Victor Hugo","Bellecour","Cordeliers","Hotel De Ville\nLouis Pradel","Foch""Masséna","Charpennes\nCharles Hernu",
+             "République Villeurbanne","Gratte-Ciel","Flachet","Cusset","Laurent Bonnevay Astroballe","Vaulx-En-Velin La Soie"]
 
         #linea B azul
         G.add_node("Oullins Gare", linea = ["B"], pos = (0.901, 0.921))
@@ -60,11 +61,16 @@ class Ini:
         G.add_node("Brotteaux", linea = ["B"], pos = (2.608, 4.672))
         G.add_node("Charpennes\nCharles Hernu", linea = ["B", "A"], pos = (2.683, 4.905))
 
+        B=["Oullins Gare","Stade De Gerland","Debourg","Place Jean Jaurès","Jean Macé","Saxe Gambetta",
+           "Place Guichard Bourse\nDu Travail","Gare Part-Dieu\nVivier Merle","Brotteaux","Charpennes\nCharles Hernu"]
+
         #linea C naranja
         G.add_node("Cuire", linea = ["C"], pos = (1.600, 6.193))
         G.add_node("Hénon", linea = ["C"], pos = (1.377, 5.558))
         G.add_node("Croix-Rousse", linea = ["C"], pos = (1.545, 5.278))
         G.add_node("Croix-Paquet", linea = ["C"], pos = (1.694, 5.036))
+
+        C=["Cuire","Hénon","Croix-Rousse","Croix-Paquet","Hotel De Ville\nLouis Pradel"]
 
         #linea D verde
         G.add_node("Gare de Vaise", linea = ["D"], pos =(0.490, 5.736))
@@ -82,6 +88,9 @@ class Ini:
         G.add_node("Mermoz Pinel", linea = ["D"], pos = (3.6712, 1.901))
         G.add_node("Parilly", linea = ["D"], pos = (3.690,1.313))
         G.add_node("Garre de Venissieux", linea = ["D"], pos = (3.690,0.222))
+
+        D=["Gare de Vaise","Valmy","Gorge de Loup","Vieux Lyon\nCathedrale St. Jean","Bellecour","Guillotière","Saxe Gambetta","Garibaldi",
+           "Sans-Souci","Monplalsir - Lumière","Grange Blanche","Laennec","Mermoz Pinel","Parilly","Garre de Venissieux",]
 
         #edge = arista
         G.add_edge("Gare de Vaise", "Valmy", weight = 2) #pon el peso en weight en el resto

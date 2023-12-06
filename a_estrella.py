@@ -6,47 +6,47 @@ import networkx as nx
 from networkx.algorithms.shortest_paths.weighted import _weight_function
 
 
-def a_star(graph, start, goal, heuristic, modoObjetivo = None):
-    open_list = [(0, None, start)]
-    g_costs = {start: 0}
-    came_from = {start: None}
+def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, modoObjetivo = None):
+    listaBusqueda = [(0, None, nodoInicio)]
+    costeG = {nodoInicio: 0}
+    caminoAnterior = {nodoInicio: None}
 
-    while open_list:
+    while listaBusqueda:
         #Elige el nodo con el coste menor
-        _, lineaActual, current = heappop(open_list)
-        
-        if current == goal:
-            path = []
-            while current is not None:
-                path.append(current)
-                current = came_from[current]
-            path.reverse()
-            return path
+        _, lineaActual, nodoActual = heappop(listaBusqueda)
 
-        for neighbor in graph.neighbors(current):
+        if nodoActual == nodoObjetivo:
+            camino = []
+            while nodoActual is not None:
+                camino.append(nodoActual)
+                nodoActual = caminoAnterior[nodoActual]
+            camino.reverse()
+            return camino
+
+        for nodoVecino in grafo.neighbors(nodoActual):
             #Calculamos el coste de ir desde el nodo actual hasta el vecino
-            tentative_g_cost = g_costs[current] + graph.edges[current, neighbor]['weight']
+            aumentoCoste_G = costeG[nodoActual] + grafo.edges[nodoActual, nodoVecino]['weight']
 
             #Miramos si el camino actual es mejor que el anterior
-            if neighbor not in g_costs or tentative_g_cost < g_costs[neighbor]:
-                g_costs[neighbor] = tentative_g_cost
-                f_cost = tentative_g_cost + heuristic(neighbor, goal, current, lineaActual)
-                lineaActual = set(neighbor[1]) & set(current[1]) #esta linea es GOD
-                heappush(open_list, (f_cost, lineaActual,neighbor))
-                came_from[neighbor] = current
+            if nodoVecino not in costeG or aumentoCoste_G < costeG[nodoVecino]:
+                costeG[nodoVecino] = aumentoCoste_G
+                costeF = aumentoCoste_G + heuristica(nodoVecino, nodoObjetivo, nodoActual, lineaActual)
+                lineaActual = set(grafo.nodes[nodoVecino]['linea']) & set(grafo.nodes[nodoActual]['linea']) #esta linea es GOD
+                heappush(listaBusqueda, (costeF, lineaActual,nodoVecino))
+                caminoAnterior[nodoVecino] = nodoActual
 
     return None
 
 # Implementacion del algoritmo A*
-def a_estrella_ruta(G, source, target, heuristic=None, weight="weight", modoObjetivo = None):
+def a_estrella_ruta(G, source, target, heuristica=None, weight="weight", modoObjetivo = None):
 
     # Se verifica que los nodos esten en el grafo
     if source not in G or target not in G:
-        raise nx.NodeNotFound(f"El nodo origen: {source} o el nodo objetivo: {target} no estan en el grafo.")
+        raise nx.NodeNotFound(f"El nodo origen: {source} o el nodo nodoObjetivo: {target} no estan en el grafo.")
 
     # Se verifica que el peso sea positivo
-    if heuristic is None:
-        def heuristic(u, v):
+    if heuristica is None:
+        def heuristica(u, v):
             return 0
 
     weight = _weight_function(G, weight)
@@ -93,7 +93,7 @@ def a_estrella_ruta(G, source, target, heuristic=None, weight="weight", modoObje
                 if qcost <= ncost:
                     continue
             else:
-                h = heuristic(neighbor, target, modoObjetivo)
+                h = heuristica(neighbor, target, modoObjetivo)
             enqueued[neighbor] = ncost, h
             c += 1
             heappush(queue, (ncost + h, c, neighbor, ncost, curnode))
