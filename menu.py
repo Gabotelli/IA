@@ -182,7 +182,7 @@ class MapApp:
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Puedes implementar la lógica de tu aplicación en esta función.
-        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), "No transbordos")
+        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), "No transbordos", 20) #aqui hay que poner la preferencia del usuario
         ini_instance.ini()
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print(f"Origen: {self.origin_coordinates}")
