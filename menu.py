@@ -52,7 +52,95 @@ class MapApp:
 
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.load_map(map_url)
-
+    def coordenadas_a_estaciones(self,coords):
+        c1=coords[0]
+        c2=coords[1]
+        res="Selección no válida"
+        if c1<72 and c1>52 and c2<133 and c2>113:
+            res="Gare de Vaise"
+        elif c1<75 and c1>55 and c2<168 and c2>148:
+            res="Valmy"
+        elif c1<76 and c1>56 and c2<222 and c2>202:
+            res="Gorge de Loup"
+        elif c1<164 and c1>144 and c2<259 and c2>239:
+            res="Vieux Lyon Cathedrale St Jean"
+        elif c1<144 and c1>127 and c2<268 and c2>248:
+            res="Minimes Theatres Romains"
+        elif c1<128 and c1>109 and c2<273 and c2>253:
+            res="Saint Just"
+        elif c1<195 and c1>175 and c2<279 and c2>259:
+            res="Bellecour"
+        elif c1<238 and c1>218 and c2<292 and c2>272:
+            res="Guillotière"
+        elif c1<255 and c1>235 and c2<301 and c2>281:
+            res="Saxe Gambetta"
+        elif c1<291 and c1>271 and c2<319 and c2>299:
+            res="Garibaldi"
+        elif c1<333 and c1>313 and c2<339 and c2>319:
+            res="Sans-Souci"
+        elif c1<360 and c1>340 and c2<353 and c2>333:
+            res="Monplaisir-Lumière"
+        elif c1<396 and c1>376 and c2<370 and c2>350:
+            res="Grange Blanche"
+        elif c1<420 and c1>400 and c2<390 and c2>370:
+            res="Laënnec"
+        elif c1<428 and c1>408 and c2<453 and c2>433:
+            res="Mermoz Pinel"
+        elif c1<429 and c1>409 and c2<503 and c2>483:
+            res="Parilly"
+        elif c1<433 and c1>413 and c2<595 and c2>575:
+            res="Gare de Vénissieux"
+        elif c1<116 and c1>96 and c2<536 and c2>516:
+            res="Oullins Gare"
+        elif c1<185 and c1>165 and c2<474 and c2>454:
+            res="Stade de Gerland"
+        elif c1<198 and c1>178 and c2<442 and c2>422:
+            res="Debourg"
+        elif c1<219 and c1>199 and c2<392 and c2>372:
+            res="Place Jean Jaurès"
+        elif c1<234 and c1>214 and c2<353 and c2>333:
+            res="Jean Macé"
+        elif c1<260 and c1>240 and c2<269 and c2>249:
+            res="Place Guichard Bourse du Travail"
+        elif c1<299 and c1>279 and c2<249 and c2>229:
+            res="Gare Part-Dieu Vivier Merle"
+        elif c1<309 and c1>289 and c2<222 and c2>202:
+            res="Brotteaux"
+        elif c1<316 and c1>296 and c2<200 and c2>180:
+            res="Charpennes Charles Hernu"
+        elif c1<194 and c1>174 and c2<95 and c2>75:
+            res="Cuire"
+        elif c1<170 and c1>150 and c2<148 and c2>128:
+            res="Hénon"
+        elif c1<190 and c1>170 and c2<171 and c2>151:
+            res="Croix-Rousse"
+        elif c1<206 and c1>186 and c2<192 and c2>172:
+            res="Croix-Paquet"
+        elif c1<208 and c1>188 and c2<216 and c2>196:
+            res="Hôtel de Ville Louis Pradel"
+        elif c1<167 and c1>187 and c2<332 and c2>312:
+            res="Perrache"
+        elif c1<178 and c1>158 and c2<306 and c2>286:
+            res="Ampère Victor Hugo"
+        elif c1<208 and c1>188 and c2<242 and c2>222:
+            res="Cordeliers"
+        elif c1<248 and c1>228 and c2<209 and c2>189:
+            res="Foch"
+        elif c1<285 and c1>265 and c2<204 and c2>184:
+            res="Masséna"
+        elif c1<370 and c1>350 and c2<197 and c2>177:
+            res="République Villeurbanne"
+        elif c1<397 and c1>377 and c2<205 and c2>185:
+            res="Gratte-Ciel"
+        elif c1<438 and c1>418 and c2<215 and c2>195:
+            res="Flachet"
+        elif c1<478 and c1>458 and c2<226 and c2>206:
+            res="Cusset"
+        elif c1<519 and c1>499 and c2<237 and c2>217:
+            res="Laurent Bonnevay Astrobalie"
+        elif c1<582 and c1>562 and c2<250 and c2>230:
+            res="Vaulx-en-Velin La Soie"
+        return res
     def load_map(self, map_url):
         try:
             # Descargar la imagen desde la URL
@@ -191,8 +279,8 @@ class MapApp:
         ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
         ini_instance.ini()
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
-            print(f"Origen: {self.origin_coordinates}")
-            print(f"Destino: {self.destination_coordinates}")
+            print("Origen:", self.coordenadas_a_estaciones(self.origin_coordinates))
+            print("Destino", self.coordenadas_a_estaciones(self.destination_coordinates))
 
         else:
             print("No se han seleccionado coordenadas en el mapa.")
