@@ -63,7 +63,7 @@ class MapApp:
         elif c1<76 and c1>56 and c2<222 and c2>202:
             res="Gorge de Loup"
         elif c1<164 and c1>144 and c2<259 and c2>239:
-            res="Vieux Lyon Cathedrale St Jean"
+            res="Vieux Lyon\nCathedrale St. Jean"
         elif c1<144 and c1>127 and c2<268 and c2>248:
             res="Minimes Theatres Romains"
         elif c1<128 and c1>109 and c2<273 and c2>253:
@@ -101,13 +101,13 @@ class MapApp:
         elif c1<234 and c1>214 and c2<353 and c2>333:
             res="Jean Macé"
         elif c1<260 and c1>240 and c2<269 and c2>249:
-            res="Place Guichard Bourse du Travail"
+            res="Place Guichard Bourse\nDu Travail"
         elif c1<299 and c1>279 and c2<249 and c2>229:
-            res="Gare Part-Dieu Vivier Merle"
+            res="Gare Part-Dieu\nVivier Merle"
         elif c1<309 and c1>289 and c2<222 and c2>202:
             res="Brotteaux"
         elif c1<316 and c1>296 and c2<200 and c2>180:
-            res="Charpennes Charles Hernu"
+            res="Charpennes\nCharles Hernu"
         elif c1<194 and c1>174 and c2<95 and c2>75:
             res="Cuire"
         elif c1<170 and c1>150 and c2<148 and c2>128:
@@ -117,7 +117,7 @@ class MapApp:
         elif c1<206 and c1>186 and c2<192 and c2>172:
             res="Croix-Paquet"
         elif c1<208 and c1>188 and c2<216 and c2>196:
-            res="Hôtel de Ville Louis Pradel"
+            res="Hotel De Ville\nLouis Pradel"
         elif c1<167 and c1>187 and c2<332 and c2>312:
             res="Perrache"
         elif c1<178 and c1>158 and c2<306 and c2>286:
