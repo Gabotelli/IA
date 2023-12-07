@@ -1,10 +1,4 @@
 from heapq import heappop, heappush
-from itertools import count
-
-import matplotlib.pyplot as plt
-import networkx as nx
-from networkx.algorithms.shortest_paths.weighted import _weight_function
-
 
 def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, modoObjetivo = None):
     listaBusqueda = [(0, None, nodoInicio)]
@@ -15,6 +9,8 @@ def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, modoObjetivo = None):
         #Elige el nodo con el coste menor
         _, lineaActual, nodoActual = heappop(listaBusqueda)
 
+        #Si el nodo es el nodo Objetivo, hemos terminado y
+        #devolvemos el camino que nos ha llevado hasta el
         if nodoActual == nodoObjetivo:
             camino = []
             while nodoActual is not None:
@@ -23,79 +19,22 @@ def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, modoObjetivo = None):
             camino.reverse()
             return camino
 
+        #Recorremos todos los vecinos del grafo
         for nodoVecino in grafo.neighbors(nodoActual):
             #Calculamos el coste de ir desde el nodo actual hasta el vecino
-            aumentoCoste_G = costeG[nodoActual] + grafo.edges[nodoActual, nodoVecino]['weight']
+            costeGVecino = costeG[nodoActual] + grafo.edges[nodoActual, nodoVecino]['weight']
 
-            #Miramos si el camino actual es mejor que el anterior
-            if nodoVecino not in costeG or aumentoCoste_G < costeG[nodoVecino]:
-                costeG[nodoVecino] = aumentoCoste_G
-                costeF = aumentoCoste_G + heuristica(nodoVecino, nodoObjetivo, nodoActual, lineaActual)
-                lineaActual = set(grafo.nodes[nodoVecino]['linea']) & set(grafo.nodes[nodoActual]['linea']) #esta linea es GOD
-                heappush(listaBusqueda, (costeF, lineaActual,nodoVecino))
+            #Miramos si el camino actual es mejor que el anterior o si el vecino no ha sido visitado
+            if nodoVecino not in costeG or costeGVecino < costeG[nodoVecino]:
+                #Actualizamos el coste del vecino
+                costeG[nodoVecino] = costeGVecino
+                costeF = costeGVecino + heuristica(nodoVecino, nodoObjetivo, nodoActual, lineaActual)
+                #Linea en comun entre nodoActual y nodoVecino
+                lineaAux = set(grafo.nodes[nodoVecino]['linea']) & set(grafo.nodes[nodoActual]['linea']) 
+                #Añadimos el vecino a la lista de busqueda
+                heappush(listaBusqueda, (costeF, lineaAux,nodoVecino))
+                #Guardamos el camino que nos ha llevado hasta el vecino
                 caminoAnterior[nodoVecino] = nodoActual
 
     return None
 
-# Implementacion del algoritmo A*
-def a_estrella_ruta(G, source, target, heuristica=None, weight="weight", modoObjetivo = None):
-
-    # Se verifica que los nodos esten en el grafo
-    if source not in G or target not in G:
-        raise nx.NodeNotFound(f"El nodo origen: {source} o el nodo nodoObjetivo: {target} no estan en el grafo.")
-
-    # Se verifica que el peso sea positivo
-    if heuristica is None:
-        def heuristica(u, v):
-            return 0
-
-    weight = _weight_function(G, weight)
-
-    G_succ = G._adj
-
-    c = 0
-    queue = [(0, c, source, 0, None)]
-    enqueued = {}
-    explored = {}
-
-    while queue:
-
-        _, __, curnode, dist, nodoPadre = heappop(queue)
-
-        if curnode == target:
-            path = [curnode]
-            node = nodoPadre
-            while node is not None:
-                path.append(node)
-                node = explored[node]
-            path.reverse()
-            return path
-
-        if curnode in explored:
-            if explored[curnode] is None:
-                continue
-
-            qcost, h = enqueued[curnode]
-            if qcost < dist:
-                continue
-        
-        explored[curnode] = nodoPadre
-
-        #Recorremos la tabla de adyacencia del nodo actual
-        for neighbor, w in G_succ[curnode].items():
-            coste = weight(curnode, neighbor, w)
-            #Los nodos que no estan conectados no se consideran
-            if coste is None:
-                continue
-            ncost = dist + coste
-            if neighbor in enqueued:
-                qcost, h = enqueued[neighbor]
-                if qcost <= ncost:
-                    continue
-            else:
-                h = heuristica(neighbor, target, modoObjetivo)
-            enqueued[neighbor] = ncost, h
-            c += 1
-            heappush(queue, (ncost + h, c, neighbor, ncost, curnode))
-            
-    raise nx.NetworkXNoPath(f"El nodo: {target} no se puede alcanzar desde: {source}")

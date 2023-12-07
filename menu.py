@@ -41,7 +41,11 @@ class MapApp:
 
         self.destination_label = tk.Label(self.main_frame, text="Destino:", font=("Arial", 14), bg="white")
         self.destination_label.pack(pady=5)
-
+        
+        # Preferencia del usuario
+        self.preference_var = None
+        self.preference = None
+        
         # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
         ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
         ask_method_button.pack(pady=10)
@@ -148,12 +152,12 @@ class MapApp:
         preferences_window.title("Preferencias")
 
         # Variables de control para los botones de opción
-        preference_var = StringVar()
+        self.preference_var = StringVar()
 
         # Función para manejar la elección del usuario
         def on_preference_selected():
-            preference = preference_var.get()
-            print(f"El usuario prefiere: {preference}")
+            self.preference = self.preference_var.get()
+            print(f"El usuario prefiere: {self.preference}")
 
             # Puedes realizar acciones adicionales según la preferencia del usuario
             # Por ejemplo, podrías planificar la ruta en función de su elección.
@@ -168,11 +172,13 @@ class MapApp:
         label = Label(preferences_window, text="¿Qué es más importante para ti?")
         label.pack(pady=10)
 
-        time_button = Radiobutton(preferences_window, text="Tiempo", variable=preference_var, value="Tiempo")
+        time_button = Radiobutton(preferences_window, text="Tiempo de salida", variable=self.preference_var, value="Tiempo de salida")
         time_button.pack()
+        
+        transfersTime_button = Radiobutton(preferences_window, text="Tiempo entre transbordos", variable=self.preference_var, value="Tiempo entre transbordos")
+        transfersTime_button.pack()
 
-        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=preference_var,
-                                       value="Transbordos")
+        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=self.preference_var, value="Transbordos")
         transfers_button.pack()
 
         # Botón para confirmar la elección
@@ -181,8 +187,8 @@ class MapApp:
 
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
-        # Puedes implementar la lógica de tu aplicación en esta función.
-        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), "No transbordos", 20) #aqui hay que poner la preferencia del usuario
+        # Falta preguntar por el tiempo entre transbordos para poder pasarlo a la clase ini
+        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
         ini_instance.ini()
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print(f"Origen: {self.origin_coordinates}")
