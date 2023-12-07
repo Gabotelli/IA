@@ -212,12 +212,12 @@ class MapApp:
             # Si aún no se ha seleccionado el origen, hazlo
             self.origin_coordinates = (x, y)
             self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="blue", outline="blue")
-            self.origin_label.config(text=f"Origen: ({x}, {y})")
+            self.origin_label.config(text=f"Origen:"+self.coordenadas_a_estaciones(self.origin_coordinates))
         elif self.destination_coordinates is None:
             # Si ya se ha seleccionado el origen, selecciona el destino
             self.destination_coordinates = (x, y)
             self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", outline="red")
-            self.destination_label.config(text=f"Destino: ({x}, {y})")
+            self.destination_label.config(text=f"Destino:"+self.coordenadas_a_estaciones(self.destination_coordinates))
 
             # Preguntar al usuario sobre sus preferencias
             self.ask_user_preferences()
@@ -266,7 +266,7 @@ class MapApp:
         transfersTime_button = Radiobutton(preferences_window, text="Tiempo entre transbordos", variable=self.preference_var, value="Tiempo entre transbordos")
         transfersTime_button.pack()
 
-        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=self.preference_var, value="Transbordos")
+        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=self.preference_var, value="No transbordos")
         transfers_button.pack()
 
         # Botón para confirmar la elección
@@ -276,8 +276,7 @@ class MapApp:
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Falta preguntar por el tiempo entre transbordos para poder pasarlo a la clase ini
-        ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
-        ini_instance.ini()
+
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print("Origen:", self.coordenadas_a_estaciones(self.origin_coordinates))
             print("Destino", self.coordenadas_a_estaciones(self.destination_coordinates))
@@ -285,6 +284,10 @@ class MapApp:
         else:
             print("No se han seleccionado coordenadas en el mapa.")
         print("Continuar con otras acciones...")
+        
+        ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference, 20) #aqui hay que poner la preferencia del usuario
+        #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
+        ini_instance.ini()
     
         """# Crear una ventana emergente para mostrar un texto predeterminado
         text_entry_window = Toplevel(self.root)

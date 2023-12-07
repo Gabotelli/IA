@@ -1,8 +1,10 @@
-import matplotlib.pyplot as plt
-import networkx as nx
-import time as t
 import datetime as dt
 import math as m
+import time as t
+
+import matplotlib.pyplot as plt
+import networkx as nx
+
 from a_estrella import a_star
 
 
@@ -14,7 +16,7 @@ class Ini:
         self.tiempoTransbordo = tiempoTransbordo
 
     def ini(self):
-        def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual):
+        def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos):
             (x1, y1) = G.nodes[nodoObjetivo]['pos']
             (x2, y2) = G.nodes[nodoHijo]['pos']
             dist  = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
@@ -23,11 +25,17 @@ class Ini:
             time = time + time_change
             #Calculamos el tiempo con el factor 0.339 unidades/min
             tiempo = dist / 0.339
-
+            tiempo += 1000 * nTransbordos
             lineaHijo = G.nodes[nodoHijo]['linea']
             if lineaActual not in lineaHijo:
-                tiempo = tiempo + 1000 if self.modoObjetivo == "No transbordos" else tiempo + self.tiempoTransbordo
-                horario = None
+                if self.modoObjetivo == "No transbordos" and lineaActual is not None:
+                    tiempo = tiempo + 1000
+                    nTransbordos += 1
+
+                else :
+                    tiempo + self.tiempoTransbordo
+                
+                """horario = None
                 frecuencia = None
                 match set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']) :
                     case "A":
@@ -50,10 +58,9 @@ class Ini:
                 elif pos == 0 or horario[pos+1] == nodoHijo:
                     desfase = horario[1][pos+1]
                 desfase %= frecuencia
-                espera = m.ceil((hora-desfase)/frecuencia)*frecuencia+desfase-hora
+                espera = m.ceil((hora-desfase)/frecuencia)*frecuencia+desfase-hora"""
 
-            return tiempo
-            #Añadir tabla de tiempo minimo entre todos los hijos y el objetivo
+            return [tiempo, nTransbordos]
             #Evaluar linea actual para ver si hay que esperar en estacion
             #Evaluar si hay que cambiar de linea
             #Evaluar el modo
