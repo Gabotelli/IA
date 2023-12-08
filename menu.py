@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
-
+import pip
+pip.main(["install","requests"])
 import requests
+from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
 from PIL import Image, ImageTk
-
+from tkinter.simpledialog import askstring
 import ini
 
 
@@ -27,7 +28,9 @@ class MapApp:
         # Coordenadas del origen y destino ingresadas por el usuario
         self.origin_coordinates = None
         self.destination_coordinates = None
-
+        #Origen y destino
+        self.origin=""
+        self.destination=""
         # Cuadros de entrada para las coordenadas
         self.origin_entry = Entry(self.main_frame, width=10)
         self.origin_entry.pack(pady=5)
@@ -49,6 +52,9 @@ class MapApp:
         # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
         ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
         ask_method_button.pack(pady=10)
+        # Agregar un botón para ingresar la hora de salida
+        enter_time_button = Button(self.main_frame, text="Hora de Salida", command=self.enter_departure_time)
+        enter_time_button.pack(pady=10)
 
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.load_map(map_url)
@@ -191,7 +197,6 @@ class MapApp:
         # Habilitar los cuadros de entrada para ingresar manualmente
         self.origin_entry.config(state=tk.NORMAL)
         self.destination_entry.config(state=tk.NORMAL)
-
         # Botón para continuar después de ingresar manualmente
         continue_button = Button(self.main_frame, text="Continuar", command=self.continue_after_manual_input)
         continue_button.pack(pady=10)
@@ -222,15 +227,22 @@ class MapApp:
             # Preguntar al usuario sobre sus preferencias
             self.ask_user_preferences()
 
+    def enter_departure_time(self):
+        # Pedir al usuario que ingrese la hora de salida
+        departure_time = askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+
+        # Puedes realizar acciones adicionales con la hora de salida ingresada, como almacenarla para su uso posterior.
+        print(f"Hora de Salida ingresada: {departure_time}")
+
+        # Aquí puedes agregar más funcionalidades según tus necesidades.
     def continue_after_manual_input(self):
         # Guardar las coordenadas ingresadas manualmente
-        origin_text = self.origin_entry.get()
-        destination_text = self.destination_entry.get()
+        self.origin = self.origin_entry.get()
+        self.destination = self.destination_entry.get()
 
         # Mostrar las coordenadas ingresadas manualmente
-        print(f"Origen (manual): {origin_text}")
-        print(f"Destino (manual): {destination_text}")
-
+        print(f"Origen (manual): {self.origin}")
+        print(f"Destino (manual): {self.destination}")
         # Continuar con otras acciones después de ingresar manualmente
         self.ask_user_preferences()
 
@@ -280,15 +292,13 @@ class MapApp:
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print("Origen:", self.coordenadas_a_estaciones(self.origin_coordinates))
             print("Destino", self.coordenadas_a_estaciones(self.destination_coordinates))
-
+            ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference, 20) #aqui hay que poner la preferencia del usuario
         else:
-            print("No se han seleccionado coordenadas en el mapa.")
+            ini_instance = ini.Ini(self.origin, self.destination, self.preference, 20) #aqui hay que poner la preferencia del usuario
         print("Continuar con otras acciones...")
-        
-        ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference, 20) #aqui hay que poner la preferencia del usuario
         #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
         ini_instance.ini()
-    
+
         """# Crear una ventana emergente para mostrar un texto predeterminado
         text_entry_window = Toplevel(self.root)
         text_entry_window.title("Ruta a Seguir")
@@ -305,7 +315,7 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_path = "Lyon/metro_lyon.png"
+map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
