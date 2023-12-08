@@ -9,14 +9,17 @@ from a_estrella import a_star
 
 
 class Ini:
-    def __init__(self, inicio, fin, modoObjetivo, tiempoTransbordo = 5):
+    def __init__(self, inicio, fin, modoObjetivo, tiempoTransbordo = 5, horaSalida = 12):
         self.inicio = inicio
         self.fin = fin
         self.modoObjetivo = modoObjetivo
         self.tiempoTransbordo = tiempoTransbordo
+        self.horaInicio = 7
+        self.horaFin = 23
+        self.horaSalida = horaSalida
 
     def ini(self):
-        def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos):
+        def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos, hora):
             (x1, y1) = G.nodes[nodoObjetivo]['pos']
             (x2, y2) = G.nodes[nodoHijo]['pos']
             dist  = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
@@ -27,16 +30,13 @@ class Ini:
             tiempo = dist / 0.339
             tiempo += 1000 * nTransbordos
             lineaHijo = G.nodes[nodoHijo]['linea']
+            espera = 0
             if lineaActual not in lineaHijo:
-                if self.modoObjetivo == "No transbordos" and lineaActual is not None:
-                    tiempo = tiempo + 1000
-                    nTransbordos += 1
-                else :
-                    tiempo + self.tiempoTransbordo
-                
-                """horario = None
+                horario = None
                 frecuencia = None
-                match set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']) :
+                hor = hora.hour
+                min = hora.minutes
+                match set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']):
                     case "A":
                         horario = self.A
                         frecuencia = 3
@@ -56,14 +56,18 @@ class Ini:
                     desfase = horario[2][pos-1]
                 elif pos == 0 or horario[pos+1] == nodoHijo:
                     desfase = horario[1][pos+1]
-                desfase %= frecuencia
-                espera = m.ceil((hora-desfase)/frecuencia)*frecuencia+desfase-hora"""
+                if hor==self.horaInicio:
+                    desfase %= frecuencia
+                espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-hora
+                if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
+                    tiempo += 1000
+                    nTransbordos += 1
+                else:
+                    tiempo += espera
+            return [tiempo, nTransbordos, dt.timedelta(minutes= espera)]
+        #Fin heuristic
 
-            return [tiempo, nTransbordos]
-            #Evaluar linea actual para ver si hay que esperar en estacion
-            #Evaluar si hay que cambiar de linea
-            #Evaluar el modo
-            #nodoHijo, nodoPadre, nodoObjetivo, lineaActual, modoObjetivo
+
         self.sentido = False
         G = nx.Graph()
         #linea A roja
@@ -167,7 +171,7 @@ class Ini:
         G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = 1)
         G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = 1)
 
-        path = a_star(G, self.inicio, self.fin, heuristic, modoObjetivo = self.modoObjetivo)
+        path = a_star(G, self.inicio, self.fin, heuristic, self.modoObjetivo, self.horaSalida)
         print("Path: ", path)
 
         pos = nx.get_node_attributes(G, 'pos')
