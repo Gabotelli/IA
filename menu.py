@@ -83,13 +83,13 @@ class MapApp:
         elif c1<396 and c1>376 and c2<370 and c2>350:
             res="Grange Blanche"
         elif c1<420 and c1>400 and c2<390 and c2>370:
-            res="Laënnec"
+            res="Laennec"
         elif c1<428 and c1>408 and c2<453 and c2>433:
             res="Mermoz Pinel"
         elif c1<429 and c1>409 and c2<503 and c2>483:
             res="Parilly"
         elif c1<433 and c1>413 and c2<595 and c2>575:
-            res="Gare de Vénissieux"
+            res="Garre de Venissieux"
         elif c1<116 and c1>96 and c2<536 and c2>516:
             res="Oullins Gare"
         elif c1<185 and c1>165 and c2<474 and c2>454:
