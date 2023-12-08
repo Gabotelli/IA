@@ -118,7 +118,7 @@ class MapApp:
             res="Croix-Paquet"
         elif c1<208 and c1>188 and c2<216 and c2>196:
             res="Hotel De Ville\nLouis Pradel"
-        elif c1<167 and c1>187 and c2<332 and c2>312:
+        elif c1<168 and c1>148 and c2<332 and c2>312:
             res="Perrache"
         elif c1<178 and c1>158 and c2<306 and c2>286:
             res="Ampère Victor Hugo"
