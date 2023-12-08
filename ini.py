@@ -31,7 +31,6 @@ class Ini:
                 if self.modoObjetivo == "No transbordos" and lineaActual is not None:
                     tiempo = tiempo + 1000
                     nTransbordos += 1
-
                 else :
                     tiempo + self.tiempoTransbordo
                 

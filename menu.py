@@ -141,15 +141,15 @@ class MapApp:
         elif c1<582 and c1>562 and c2<250 and c2>230:
             res="Vaulx-en-Velin La Soie"
         return res
-    def load_map(self, map_url):
+    def load_map(self, map_path):
         try:
-            # Descargar la imagen desde la URL
-            image = Image.open(requests.get(map_url, stream=True).raw)
+            # Open the image from the directory
+            image = Image.open(map_path)
             self.map_image = ImageTk.PhotoImage(image)
             self.canvas.config(width=image.width, height=image.height)
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.map_image)
         except Exception as e:
-            print(f"Error al cargar la imagen desde la URL: {e}")
+            print(f"Error al cargar la imagen desde el directorio: {e}")
 
     def ask_input_method(self):
         # Crear una ventana emergente para preguntar al usuario cómo quiere ingresar el destino
@@ -305,11 +305,11 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lyon_-_Metro_network_map.png/600px-Lyon_-_Metro_network_map.png"
+map_path = "Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
-app = MapApp(root, map_url)
+app = MapApp(root, map_path)
 
 # Iniciar el bucle principal
 root.mainloop()
