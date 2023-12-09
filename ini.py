@@ -62,16 +62,20 @@ class Ini:
                 pos = linea.index(nodoPadre)
                 desfase = 0
                 #Calcula el sentido a partir de detecar hacia que lado se encuentra la siguiente parada y recoge el desfase 
-                #(tiempo desde que sale el tren de la primera parada has) 
+                #(tiempo desde que sale un tren de la primera parada hasta la actual) 
                 if pos != 0 and (pos == len(linea)-1 or horario[0][pos-1] == nodoHijo):
                     desfase = horario[2][pos-1]
                 elif pos == 0 or horario[0][pos+1] == nodoHijo:
                     desfase = horario[1][pos+1]
+                #Si ya no pasa ningun tren devuelve error
                 if hor==self.horaFin and min>desfase:
                     return -1
-                elif hor==self.horaInicio:
+                #Los trenes pasan siempre en cada durante los mismo minutos excepto la primera hora, en la que se tiene que esperar a que pase el primer tren
+                elif hor!=self.horaInicio:
                     desfase %= frecuencia
-                espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-hora
+                #Se calcula el tiempo que hay que esperar a que llegue el tren calculando el horario del siguiente tren respecto del la hora actual
+                espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-min
+                #En caso de estar activo el modo "no transbordos" y tener que hacer un transbordo se suma la penalizacion
                 if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
                     tiempo += 1000
                     nTransbordos += 1
