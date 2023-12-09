@@ -99,7 +99,7 @@ class Ini:
         G.add_node("Flachet", linea = ["A"], pos = (3.737, 4.765))
         G.add_node("Cusset", linea = ["A"], pos = (4.120, 4.635))
         G.add_node("Laurent Bonnevay Astroballe", linea = ["A"], pos = (4.500, 4.500))
-        G.add_node("Vaulx-En-Velin La Soie", linea = ["A"], pos = (5.043, 4.327))
+        G.add_node("Vaulx-en-Velin La Soie", linea = ["A"], pos = (5.043, 4.327))
 
         self.A = [["Perrache","Ampère Victor Hugo","Bellecour","Cordeliers","Hotel De Ville\nLouis Pradel","Foch","Masséna","Charpennes\nCharles Hernu","République Villeurbanne","Gratte-Ciel",
                    "Flachet","Cusset","Laurent Bonnevay Astroballe","Vaulx-En-Velin La Soie"],[0,1,2,4,5,7,8,10,11,13,14,16,17,18],[18,17,16,14,13,11,10,8,7,5,4,2,1,0]]
@@ -186,7 +186,7 @@ class Ini:
         G.add_edge("Gratte-Ciel", "Flachet", weight = 1)
         G.add_edge("Flachet", "Cusset", weight = 2)
         G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = 1)
-        G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = 1)
+        G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-en-Velin La Soie", weight = 1)
 
         path, horaLlegada = a_star(G, self.inicio, self.fin, heuristic, self.horaSalida)
         if path == -1:
