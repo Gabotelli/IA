@@ -37,7 +37,7 @@ class Ini:
             lineaHijo = G.nodes[nodoHijo]['linea']
             espera = 0
             #A partir de aqui solo se ejecutara en caso de no estar subido al tren, ya sea al principio o durante un transbordo
-            if lineaActual not in lineaHijo:
+            if lineaActual not in lineaHijo and self.modoObjetivo != "No transbordos":
                 horario = None
                 frecuencia = None
                 #Coge la hora y los minutos del momento en el que se encuentra en la parada
@@ -81,6 +81,10 @@ class Ini:
                     nTransbordos += 1
                 else:
                     tiempo += espera
+            else :
+                tiempo += 1000
+                nTransbordos += 1
+
             return [tiempo, nTransbordos, dt.timedelta(minutes= espera)]
         #Fin heuristic
 
