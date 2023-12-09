@@ -1,10 +1,10 @@
+import datetime as dt
 import tkinter as tk
-import pip
-pip.main(["install","requests"])
-import requests
 from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
-from PIL import Image, ImageTk
 from tkinter.simpledialog import askstring
+
+from PIL import Image, ImageTk
+
 import ini
 
 
@@ -48,7 +48,8 @@ class MapApp:
         # Preferencia del usuario
         self.preference_var = None
         self.preference = None
-        
+        #Variable hora de salida
+        self.departure_time=None
         # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
         ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
         ask_method_button.pack(pady=10)
@@ -230,9 +231,9 @@ class MapApp:
     def enter_departure_time(self):
         # Pedir al usuario que ingrese la hora de salida
         departure_time = askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
-
+        self.departure_time = dt.datetime(2003, 6, 18, int(departure_time[0:2]), int(departure_time[3:5]), 0)
         # Puedes realizar acciones adicionales con la hora de salida ingresada, como almacenarla para su uso posterior.
-        print(f"Hora de Salida ingresada: {departure_time}")
+        print(f"Hora de Salida ingresada: {self.departure_time}")
 
         # Aquí puedes agregar más funcionalidades según tus necesidades.
     def continue_after_manual_input(self):
@@ -292,12 +293,15 @@ class MapApp:
         if self.origin_coordinates is not None and self.destination_coordinates is not None:
             print("Origen:", self.coordenadas_a_estaciones(self.origin_coordinates))
             print("Destino", self.coordenadas_a_estaciones(self.destination_coordinates))
-            ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference, 20) #aqui hay que poner la preferencia del usuario
+            ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference ,self.departure_time) #aqui hay que poner la preferencia del usuario
         else:
-            ini_instance = ini.Ini(self.origin, self.destination, self.preference, 20) #aqui hay que poner la preferencia del usuario
+            ini_instance = ini.Ini(self.origin, self.destination, self.preference ,self.departure_time) #aqui hay que poner la preferencia del usuario
         print("Continuar con otras acciones...")
         #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
-        ini_instance.ini()
+        if(ini_instance.ini()==-1):
+            print("Mongolo pedazo de inutil amorfo aprende cuando esta abierto el metro")
+
+        self.root.destroy()
 
         """# Crear una ventana emergente para mostrar un texto predeterminado
         text_entry_window = Toplevel(self.root)
@@ -315,7 +319,7 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/metro_lyon.png"
+map_path = "../IA/Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()

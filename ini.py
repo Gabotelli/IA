@@ -9,7 +9,7 @@ from a_estrella import a_star
 
 
 class Ini:
-    def __init__(self, inicio, fin, modoObjetivo, tiempoTransbordo = 5, horaSalida = 12):
+    def __init__(self, inicio, fin, modoObjetivo, horaSalida, tiempoTransbordo = 5):
         self.inicio = inicio
         self.fin = fin
         self.modoObjetivo = modoObjetivo
@@ -19,24 +19,32 @@ class Ini:
         self.horaSalida = horaSalida
 
     def ini(self):
+        if(self.horaSalida.hour < 6): 
+            return -1
+        if (self.horaSalida.hour < 7) : #lo cambias aqui
+            self.horaSalida = dt.datetime(2003, 6, 18, 7, 0, 0)
         def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos, hora):
+            #Calcula la distacia recta entre dos nodos en el mapa
             (x1, y1) = G.nodes[nodoObjetivo]['pos']
             (x2, y2) = G.nodes[nodoHijo]['pos']
             dist  = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-            time = dt.datetime(2003, 6, 18, 9, 36, 0)
-            time_change = dt.timedelta(minutes = 40)
-            time = time + time_change
-            #Calculamos el tiempo con el factor 0.339 unidades/min
+            #Calculamos el tiempo estimado con la velocidad media teorica 0.339 unidades/min, en el que una unidad en el mapa representa 1,46 kilometros en la realidad
             tiempo = dist / 0.339
+            #Anade a tiempo una penalizacion por usar transbordos en el modo "no transbordos", que aumenta cuantos mas transbordos se realicen,
+            #en el modo normal "ntransbordos" siempre es 0
             tiempo += 1000 * nTransbordos
+            #Recoge las lineas de metro a las que pertenece la siguiente parada
             lineaHijo = G.nodes[nodoHijo]['linea']
             espera = 0
+            #A partir de aqui solo se ejecutara en caso de no estar subido al tren, ya sea al principio o durante un transbordo
             if lineaActual not in lineaHijo:
                 horario = None
                 frecuencia = None
+                #Coge la hora y los minutos del momento en el que se encuentra en la parada
                 hor = hora.hour
-                min = hora.minutes
-                match set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']):
+                min = hora.minute
+                #Coge la lista de paradas, sus horarios y la frecuencia de trenes de la linea que interseca al padre y al hijo
+                match str((set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']) ).pop()):
                     case "A":
                         horario = self.A
                         frecuencia = 3
@@ -49,14 +57,19 @@ class Ini:
                     case "D":
                         horario = self.D
                         frecuencia = 2
+                #La lista de paradas de la linea es la primera fila de la matriz horario mientras que las otras dos representan el horario (lista de desfases) para ambos sentidos
                 linea = horario[0]
                 pos = linea.index(nodoPadre)
                 desfase = 0
-                if pos != 0 and (pos == len(linea)-1 or horario[pos-1] == nodoHijo):
+                #Calcula el sentido a partir de detecar hacia que lado se encuentra la siguiente parada y recoge el desfase 
+                #(tiempo desde que sale el tren de la primera parada has) 
+                if pos != 0 and (pos == len(linea)-1 or horario[0][pos-1] == nodoHijo):
                     desfase = horario[2][pos-1]
-                elif pos == 0 or horario[pos+1] == nodoHijo:
+                elif pos == 0 or horario[0][pos+1] == nodoHijo:
                     desfase = horario[1][pos+1]
-                if hor==self.horaInicio:
+                if hor==self.horaFin and min>desfase:
+                    return -1
+                elif hor==self.horaInicio:
                     desfase %= frecuencia
                 espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-hora
                 if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
@@ -171,7 +184,9 @@ class Ini:
         G.add_edge("Cusset", "Laurent Bonnevay Astroballe", weight = 1)
         G.add_edge("Laurent Bonnevay Astroballe", "Vaulx-En-Velin La Soie", weight = 1)
 
-        path = a_star(G, self.inicio, self.fin, heuristic, self.modoObjetivo, self.horaSalida)
+        path, horaLlegada = a_star(G, self.inicio, self.fin, heuristic, self.horaSalida)
+        if path == -1:
+            return -1
         print("Path: ", path)
 
         pos = nx.get_node_attributes(G, 'pos')
@@ -182,6 +197,4 @@ class Ini:
         plt.xlim(0, 6)
         plt.ylim(0, 7)
         plt.show()
-
-
-
+        return 0
