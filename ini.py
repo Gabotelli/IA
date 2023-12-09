@@ -20,10 +20,8 @@ class Ini:
 
     def ini(self):
         if(self.horaSalida.hour < 6): 
-            print("Error")
             return -1
         if (self.horaSalida.hour < 7) : #lo cambias aqui
-            print("Test")
             self.horaSalida = dt.datetime(2003, 6, 18, 7, 0, 0)
         def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos, hora):
             #Calcula la distacia recta entre dos nodos en el mapa
@@ -65,9 +63,9 @@ class Ini:
                 desfase = 0
                 #Calcula el sentido a partir de detecar hacia que lado se encuentra la siguiente parada y recoge el desfase 
                 #(tiempo desde que sale el tren de la primera parada has) 
-                if pos != 0 and (pos == len(linea)-1 or horario[pos-1] == nodoHijo):
+                if pos != 0 and (pos == len(linea)-1 or horario[0][pos-1] == nodoHijo):
                     desfase = horario[2][pos-1]
-                elif pos == 0 or horario[pos+1] == nodoHijo:
+                elif pos == 0 or horario[0][pos+1] == nodoHijo:
                     desfase = horario[1][pos+1]
                 if hor==self.horaFin and min>desfase:
                     return -1
