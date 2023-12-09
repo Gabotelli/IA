@@ -37,7 +37,7 @@ class Ini:
             lineaHijo = G.nodes[nodoHijo]['linea']
             espera = 0
             #A partir de aqui solo se ejecutara en caso de no estar subido al tren, ya sea al principio o durante un transbordo
-            if lineaActual not in lineaHijo and self.modoObjetivo != "No transbordos":
+            if lineaActual not in lineaHijo:
                 horario = None
                 frecuencia = None
                 #Coge la hora y los minutos del momento en el que se encuentra en la parada
@@ -81,10 +81,8 @@ class Ini:
                     nTransbordos += 1
                 else:
                     tiempo += espera
-            else :
-                tiempo += 1000
-                nTransbordos += 1
-
+            elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea']):
+                tiempo += 500
             return [tiempo, nTransbordos, dt.timedelta(minutes= espera)]
         #Fin heuristic
 
@@ -206,6 +204,6 @@ class Ini:
         plt.ylim(0, 7)
         plt.text(4, 3.5, "Hora de llegada:\n" + str(horaLlegada.time())[0:5], fontsize = 20)
         # Guardar la imagen
-        plt.savefig("C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/recorrido_final.png")
+        plt.savefig("../IA/Lyon/recorrido_final.png")
         """plt.show()"""
         return 0
