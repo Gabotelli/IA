@@ -19,7 +19,7 @@ class Ini:
         self.horaSalida = horaSalida
 
     def ini(self):
-        if(self.horaSalida.hour < 6): 
+        if(self.horaSalida.hour < 6):
             return -1
         if (self.horaSalida.hour < 7) : #lo cambias aqui
             self.horaSalida = dt.datetime(2003, 6, 18, 7, 0, 0)
@@ -61,8 +61,8 @@ class Ini:
                 linea = horario[0]
                 pos = linea.index(nodoPadre)
                 desfase = 0
-                #Calcula el sentido a partir de detecar hacia que lado se encuentra la siguiente parada y recoge el desfase 
-                #(tiempo desde que sale un tren de la primera parada hasta la actual) 
+                #Calcula el sentido a partir de detecar hacia que lado se encuentra la siguiente parada y recoge el desfase
+                #(tiempo desde que sale un tren de la primera parada hasta la actual)
                 if pos != 0 and (pos == len(linea)-1 or horario[0][pos-1] == nodoHijo):
                     desfase = horario[2][pos-1]
                 elif pos == 0 or horario[0][pos+1] == nodoHijo:
@@ -117,7 +117,7 @@ class Ini:
 
         self.B=[["Oullins Gare","Stade De Gerland","Debourg","Place Jean Jaurès","Jean Macé","Saxe Gambetta","Place Guichard Bourse\nDu Travail",
                  "Gare Part-Dieu\nVivier Merle","Brotteaux","Charpennes\nCharles Hernu"],[0,2,3,6,8,10,12,14,15,16],[16,14,13,10,8,6,4,2,1,0]]
-        
+
         #linea C naranja
         G.add_node("Cuire", linea = ["C"], pos = (1.600, 6.193))
         G.add_node("Hénon", linea = ["C"], pos = (1.377, 5.558))

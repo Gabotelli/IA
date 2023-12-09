@@ -281,7 +281,17 @@ class MapApp:
         # Botón para confirmar la elección
         confirm_button = Button(preferences_window, text="Confirmar", command=on_preference_selected)
         confirm_button.pack(pady=10)
+    def show_message_in_label(self, message):
+        # Crear una nueva ventana para mostrar el mensaje
+        message_window = Toplevel(self.root)
+        message_window.title("Mensaje")
 
+        # Crear un Label para mostrar el mensaje
+        label = Label(message_window, text=message, font=("Arial", 14), bg="white")
+        label.pack(pady=10)
+
+        # Iniciar el bucle principal de la ventana de mensaje
+        message_window.mainloop()
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Falta preguntar por el tiempo entre transbordos para poder pasarlo a la clase ini
@@ -295,7 +305,9 @@ class MapApp:
         print("Continuar con otras acciones...")
         #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
         if(ini_instance.ini()==-1):
-            print("Mongolo pedazo de inutil amorfo aprende cuando esta abierto el metro")
+            # Mostrar el mensaje sobre el estado del metro
+            metro_status_message ="El metro está cerrado a esta hora."
+            self.show_message_in_label(metro_status_message)
 
         self.root.destroy()
 
@@ -315,7 +327,7 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_path = "../IA/Lyon/metro_lyon.png"
+map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
