@@ -81,9 +81,9 @@ class Ini:
                     nTransbordos += 1
                 else:
                     tiempo += espera
-            elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea']):
+            elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea'] and self.modoObjetivo == "No transbordos"):
                 tiempo += 500
-            return [tiempo, nTransbordos, dt.timedelta(minutes= espera)]
+            return [tiempo, nTransbordos, dt.timedelta(minutes = espera)]
         #Fin heuristic
 
 
