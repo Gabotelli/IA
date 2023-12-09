@@ -1,5 +1,5 @@
 from heapq import heappop, heappush
-
+import datetime as dt
 
 def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, horaSalida):
     listaBusqueda = [(0, None, nodoInicio, 0, horaSalida)] #CosteF, Linea, Nodo, transbordos
@@ -36,7 +36,7 @@ def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, horaSalida):
                 costeG[nodoVecino] = costeGVecino
                 costeF[nodoVecino] = costeFVecino
                 #Actualizamos la hora de llegada al nodo vecino
-                horaAux = hora + variacionTiempo
+                horaAux = hora + variacionTiempo + dt.timedelta(minutes = grafo.edges[nodoActual, nodoVecino]['weight'])
                 #Linea en comun entre nodoActual y nodoVecino
                 lineaAux = str((set(grafo.nodes[nodoVecino]['linea']) & set(grafo.nodes[nodoActual]['linea']) ).pop())
                 #Añadimos el vecino a la lista de busqueda
