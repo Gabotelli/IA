@@ -334,7 +334,7 @@ class MapApp:
             metro_status_message ="El metro está cerrado a esta hora."
             self.show_message_in_label(metro_status_message)
         # Mostrar la segunda imagen después de cerrar la aplicación principal
-        second_map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/recorrido_final.png"
+        second_map_path = "../IA/Lyon/recorrido_final.png"
         self.show_second_image(second_map_path)
         # Cerrar el bucle principal de la ventana principal
         self.close_app()
@@ -342,7 +342,7 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/metro_lyon.png"
+map_path = "../IA/Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
