@@ -69,7 +69,7 @@ class Ini:
                     desfase = horario[1][pos+1]
                 #Si ya no pasa ningun tren devuelve error
                 if hor==self.horaFin and min>desfase:
-                    return -1
+                    return [-1,0,0]
                 #Los trenes pasan siempre en cada durante los mismo minutos excepto la primera hora, en la que se tiene que esperar a que pase el primer tren
                 elif hor!=self.horaInicio:
                     desfase %= frecuencia
@@ -102,7 +102,7 @@ class Ini:
         G.add_node("Vaulx-en-Velin La Soie", linea = ["A"], pos = (5.043, 4.327))
 
         self.A = [["Perrache","Ampère Victor Hugo","Bellecour","Cordeliers","Hotel De Ville\nLouis Pradel","Foch","Masséna","Charpennes\nCharles Hernu","République Villeurbanne","Gratte-Ciel",
-                   "Flachet","Cusset","Laurent Bonnevay Astroballe","Vaulx-En-Velin La Soie"],[0,1,2,4,5,7,8,10,11,13,14,16,17,18],[18,17,16,14,13,11,10,8,7,5,4,2,1,0]]
+                   "Flachet","Cusset","Laurent Bonnevay Astroballe","Vaulx-en-Velin La Soie"],[0,1,2,4,5,7,8,10,11,13,14,16,17,18],[18,17,16,14,13,11,10,8,7,5,4,2,1,0]]
 
         #linea B azul
         G.add_node("Oullins Gare", linea = ["B"], pos = (0.901, 0.921))
@@ -136,14 +136,14 @@ class Ini:
         G.add_node("Saxe Gambetta", linea = ["B", "D"], pos = (2.142, 3.748))
         G.add_node("Garibaldi", linea = ["D"], pos =(2.500, 3.500))
         G.add_node("Sans-Souci", linea = ["D"], pos = (2.832, 3.272))
-        G.add_node("Monplalsir - Lumière", linea = ["D"], pos = (3.056, 3.077))
+        G.add_node("Monplaisir - Lumière", linea = ["D"], pos = (3.056, 3.077))
         G.add_node("Grange Blanche", linea = ["D"], pos = (3.392, 2.899))
         G.add_node("Laennec", linea = ["D"], pos = (3.588, 2.666))
         G.add_node("Mermoz Pinel", linea = ["D"], pos = (3.6712, 1.901))
         G.add_node("Parilly", linea = ["D"], pos = (3.690,1.313))
         G.add_node("Garre de Venissieux", linea = ["D"], pos = (3.690,0.222))
 
-        self.D=[["Gare de Vaise","Valmy","Gorge de Loup","Vieux Lyon\nCathedrale St. Jean","Bellecour","Guillotière","Saxe Gambetta","Garibaldi","Sans-Souci","Monplalsir - Lumière",
+        self.D=[["Gare de Vaise","Valmy","Gorge de Loup","Vieux Lyon\nCathedrale St. Jean","Bellecour","Guillotière","Saxe Gambetta","Garibaldi","Sans-Souci","Monplaisir - Lumière",
                  "Grange Blanche","Laennec","Mermoz Pinel","Parilly","Garre de Venissieux"],[0,2,4,6,8,9,11,12,14,15,17,18,20,22,24],[24,22,20,18,16,15,13,12,10,9,7,6,4,2,0]]
 
         #edge = arista
@@ -155,8 +155,8 @@ class Ini:
         G.add_edge("Guillotière", "Saxe Gambetta", weight = 2)
         G.add_edge("Saxe Gambetta", "Garibaldi", weight = 1)
         G.add_edge("Garibaldi", "Sans-Souci", weight = 2)
-        G.add_edge("Sans-Souci", "Monplalsir - Lumière", weight = 1)
-        G.add_edge("Monplalsir - Lumière", "Grange Blanche", weight = 2)
+        G.add_edge("Sans-Souci", "Monplaisir - Lumière", weight = 1)
+        G.add_edge("Monplaisir - Lumière", "Grange Blanche", weight = 2)
         G.add_edge("Grange Blanche", "Laennec", weight = 1)
         G.add_edge("Laennec", "Mermoz Pinel", weight = 2)
         G.add_edge("Mermoz Pinel", "Parilly", weight = 2)

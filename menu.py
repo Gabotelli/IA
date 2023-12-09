@@ -71,10 +71,10 @@ class MapApp:
             res="Gorge de Loup"
         elif c1<164 and c1>144 and c2<259 and c2>239:
             res="Vieux Lyon\nCathedrale St. Jean"
-        elif c1<144 and c1>127 and c2<268 and c2>248:
-            res="Minimes Theatres Romains"
-        elif c1<128 and c1>109 and c2<273 and c2>253:
-            res="Saint Just"
+        #elif c1<144 and c1>127 and c2<268 and c2>248:
+        #    res="Minimes Theatres Romains"
+        #elif c1<128 and c1>109 and c2<273 and c2>253:
+        #    res="Saint Just"
         elif c1<195 and c1>175 and c2<279 and c2>259:
             res="Bellecour"
         elif c1<238 and c1>218 and c2<292 and c2>272:
@@ -86,7 +86,7 @@ class MapApp:
         elif c1<333 and c1>313 and c2<339 and c2>319:
             res="Sans-Souci"
         elif c1<360 and c1>340 and c2<353 and c2>333:
-            res="Monplaisir-Lumière"
+            res="Monplaisir - Lumière"
         elif c1<396 and c1>376 and c2<370 and c2>350:
             res="Grange Blanche"
         elif c1<420 and c1>400 and c2<390 and c2>370:
@@ -100,7 +100,7 @@ class MapApp:
         elif c1<116 and c1>96 and c2<536 and c2>516:
             res="Oullins Gare"
         elif c1<185 and c1>165 and c2<474 and c2>454:
-            res="Stade de Gerland"
+            res="Stade De Gerland"
         elif c1<198 and c1>178 and c2<442 and c2>422:
             res="Debourg"
         elif c1<219 and c1>199 and c2<392 and c2>372:
@@ -144,7 +144,7 @@ class MapApp:
         elif c1<478 and c1>458 and c2<226 and c2>206:
             res="Cusset"
         elif c1<519 and c1>499 and c2<237 and c2>217:
-            res="Laurent Bonnevay Astrobalie"
+            res="Laurent Bonnevay Astroballe"
         elif c1<582 and c1>562 and c2<250 and c2>230:
             res="Vaulx-en-Velin La Soie"
         return res
