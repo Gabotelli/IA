@@ -200,6 +200,6 @@ class Ini:
         nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
         plt.xlim(0, 6)
         plt.ylim(0, 7)
-        plt.text(5, 3.5, "Hora de llegada: " + str(horaLlegada.time())[0:5], fontsize = 30)
+        plt.text(4, 3.5, "Hora de llegada:\n" + str(horaLlegada.time())[0:5], fontsize = 20)
         plt.show()
         return 0

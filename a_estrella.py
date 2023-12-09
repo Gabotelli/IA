@@ -15,11 +15,12 @@ def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, horaSalida):
         #devolvemos el camino que nos ha llevado hasta el
         if nodoActual == nodoObjetivo:
             camino = []
+            horaActual = hora
             while nodoActual is not None:
                 camino.append(nodoActual)
                 nodoActual = caminoAnterior[nodoActual]
             camino.reverse()
-            return [camino, hora]
+            return [camino, horaActual]
 
         #Recorremos todos los vecinos del grafo
         for nodoVecino in grafo.neighbors(nodoActual):
