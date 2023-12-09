@@ -71,10 +71,6 @@ class MapApp:
             res="Gorge de Loup"
         elif c1<164 and c1>144 and c2<259 and c2>239:
             res="Vieux Lyon\nCathedrale St. Jean"
-        #elif c1<144 and c1>127 and c2<268 and c2>248:
-        #    res="Minimes Theatres Romains"
-        #elif c1<128 and c1>109 and c2<273 and c2>253:
-        #    res="Saint Just"
         elif c1<195 and c1>175 and c2<279 and c2>259:
             res="Bellecour"
         elif c1<238 and c1>218 and c2<292 and c2>272:
@@ -230,10 +226,10 @@ class MapApp:
 
     def enter_departure_time(self):
         # Pedir al usuario que ingrese la hora de salida
-        departure_time = askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+        departure_time =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+
+        # Convertir la hora ingresada a un objeto datetime
         self.departure_time = dt.datetime(2003, 6, 18, int(departure_time[0:2]), int(departure_time[3:5]), 0)
-        # Puedes realizar acciones adicionales con la hora de salida ingresada, como almacenarla para su uso posterior.
-        print(f"Hora de Salida ingresada: {self.departure_time}")
 
         # Aquí puedes agregar más funcionalidades según tus necesidades.
     def continue_after_manual_input(self):
