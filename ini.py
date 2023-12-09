@@ -20,8 +20,10 @@ class Ini:
 
     def ini(self):
         if(self.horaSalida.hour < 6): 
+            print("Error")
             return -1
         if (self.horaSalida.hour < 7) : #lo cambias aqui
+            print("Test")
             self.horaSalida = dt.datetime(2003, 6, 18, 7, 0, 0)
         def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos, hora):
             #Calcula la distacia recta entre dos nodos en el mapa
@@ -44,7 +46,7 @@ class Ini:
                 hor = hora.hour
                 min = hora.minute
                 #Coge la lista de paradas, sus horarios y la frecuencia de trenes de la linea que interseca al padre y al hijo
-                match set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']):
+                match str((set(G.nodes[nodoHijo]['linea']) & set(G.nodes[nodoPadre]['linea']) ).pop()):
                     case "A":
                         horario = self.A
                         frecuencia = 3

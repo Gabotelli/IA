@@ -298,9 +298,8 @@ class MapApp:
             ini_instance = ini.Ini(self.origin, self.destination, self.preference ,self.departure_time) #aqui hay que poner la preferencia del usuario
         print("Continuar con otras acciones...")
         #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
-        if(ini_instance==-1):
+        if(ini_instance.ini()==-1):
             print("Mongolo pedazo de inutil amorfo aprende cuando esta abierto el metro")
-            
 
         self.root.destroy()
 
