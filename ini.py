@@ -205,5 +205,4 @@ class Ini:
         plt.text(4, 3.5, "Hora de llegada:\n" + str(horaLlegada.time())[0:5], fontsize = 20)
         # Guardar la imagen
         plt.savefig("../IA/Lyon/recorrido_final.png")
-        """plt.show()"""
         return 0
