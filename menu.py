@@ -50,12 +50,12 @@ class MapApp:
         self.preference = None
         #Variable hora de salida
         self.departure_time=None
-        # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
-        ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
-        ask_method_button.pack(pady=10)
         # Agregar un botón para ingresar la hora de salida
         enter_time_button = Button(self.main_frame, text="Hora de Salida", command=self.enter_departure_time)
         enter_time_button.pack(pady=10)
+        # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
+        ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
+        ask_method_button.pack(pady=10)
 
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.load_map(map_url)
@@ -292,6 +292,31 @@ class MapApp:
 
         # Iniciar el bucle principal de la ventana de mensaje
         message_window.mainloop()
+        # Agregar este método a la clase MapApp
+    def close_app(self):
+        self.root.quit()
+        self.root.destroy()
+    def show_second_image(self, second_map_path):
+        try:
+            # Abrir la segunda imagen desde el directorio
+            second_image = Image.open(second_map_path)
+            second_map_image = ImageTk.PhotoImage(second_image)
+
+            # Crear una nueva ventana para la segunda imagen
+            second_image_window = Toplevel(self.root)
+            second_image_window.title("Segunda Imagen")
+
+            # Crear un lienzo (Canvas) para mostrar la segunda imagen
+            second_canvas = tk.Canvas(second_image_window)
+            second_canvas.pack(fill=tk.BOTH, expand=True)
+            second_canvas.config(width=second_image.width, height=second_image.height)
+            second_canvas.create_image(0, 0, anchor=tk.NW, image=second_map_image)
+
+            # Iniciar el bucle principal de la ventana de la segunda imagen
+            second_image_window.mainloop()
+        except Exception as e:
+            print(f"Error al cargar la segunda imagen desde el directorio: {e}")
+
     def continue_after_preferences(self):
         # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
         # Falta preguntar por el tiempo entre transbordos para poder pasarlo a la clase ini
@@ -308,26 +333,16 @@ class MapApp:
             # Mostrar el mensaje sobre el estado del metro
             metro_status_message ="El metro está cerrado a esta hora."
             self.show_message_in_label(metro_status_message)
-
-        self.root.destroy()
-
-        """# Crear una ventana emergente para mostrar un texto predeterminado
-        text_entry_window = Toplevel(self.root)
-        text_entry_window.title("Ruta a Seguir")
-    
-        # Etiqueta con el texto predeterminado
-        text_label = Label(text_entry_window, text="Ruta a seguir:", font=("Arial", 14), bg="white")
-        text_label.pack(pady=10)
-    
-        # Texto predeterminado
-        default_text = "Aquí puedes mostrar la ruta a seguir."
-        text_content_label = Label(text_entry_window, text=default_text, font=("Arial", 12))
-        text_content_label.pack(pady=10)"""
+        # Mostrar la segunda imagen después de cerrar la aplicación principal
+        second_map_path = "../IA/Lyon/recorrido_final.png"
+        self.show_second_image(second_map_path)
+        # Cerrar el bucle principal de la ventana principal
+        self.close_app()
 
 
 
 # Imagen del metro de Lyon
-map_path = "C:/Users/David/OneDrive/Documentos/GitHub/IA/Lyon/metro_lyon.png"
+map_path = "../IA/Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
