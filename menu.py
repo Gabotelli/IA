@@ -51,10 +51,10 @@ class MapApp:
         self.destino_etiqueta.pack(pady=5)
         
         # Preferencia del usuario
-        self.preference_var = None
-        self.preference = None
+        self.preferencia_var = None
+        self.preferencia = None
         #Variable hora de salida
-        self.departure_time=None
+        self.hora_de_partida=None
 
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.cargar_mapa(map_url)
@@ -160,30 +160,30 @@ class MapApp:
         method_ventana.title("Método de Ingreso")
 
         # Variables de control para los botones de opción
-        input_method_var = StringVar()
+        metodo_introducido_var = StringVar()
 
         # Función para manejar la elección del usuario
         def metodo_seleccionado():
-            input_method = input_method_var.get()
-            print(f"Usuario elige ingresar: {input_method}")
+            metodo_introducido = metodo_introducido_var.get()
+            print(f"Usuario elige ingresar: {metodo_introducido}")
 
             # Cerrar la ventana emergente
             method_ventana.destroy()
 
             # Procesar la elección del usuario y continuar
-            if input_method == "manual":
+            if metodo_introducido == "manual":
                 self.introducir_coordenadas_manualmente()
-            elif input_method == "map":
+            elif metodo_introducido == "map":
                 self.seleccionar_coordenadas_en_el_map()
 
         # Etiqueta y botones de opción
         etiqueta = Label(method_ventana, text="¿Cómo quieres ingresar el destino?")
         etiqueta.pack(pady=10)
 
-        manual_button = Radiobutton(method_ventana, text="Manualmente", variable=input_method_var, value="manual")
+        manual_button = Radiobutton(method_ventana, text="Manualmente", variable=metodo_introducido_var, value="manual")
         manual_button.pack()
 
-        map_button = Radiobutton(method_ventana, text="En el mapa", variable=input_method_var, value="map")
+        map_button = Radiobutton(method_ventana, text="En el mapa", variable=metodo_introducido_var, value="map")
         map_button.pack()
 
         # Botón para confirmar la elección
@@ -226,10 +226,11 @@ class MapApp:
 
     def introducir_tiempo_salida(self):
         # Pedir al usuario que ingrese la hora de salida
-        departure_time =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+        hora_de_partida =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
 
         # Convertir la hora ingresada a un objeto datetime
-        self.departure_time = dt.datetime(2003, 6, 18, int(departure_time[0:2]), int(departure_time[3:5]), 0)
+        self.hora_de_partida = dt.datetime(2003, 6, 18, int(hora_de_partida[0:2]), int(hora_de_partida[3:5]), 0)
+        print("La hora seleccionada es ",self.hora_de_partida)
 
         # Aquí puedes agregar más funcionalidades según tus necesidades.
     def continuar_despues_de_introducir_manualmente(self):
@@ -245,35 +246,35 @@ class MapApp:
 
     def pregunta_preferencias_usuario(self):
         # Crear una ventana emergente para la pregunta
-        preferences_ventana = Toplevel(self.root)
-        preferences_ventana.title("Preferencias")
+        ventana_preferencias = Toplevel(self.root)
+        ventana_preferencias.title("Preferencias")
 
         # Variables de control para los botones de opción
-        self.preference_var = StringVar()
+        self.preferencia_var = StringVar()
 
         # Función para manejar la elección del usuario
         def manejo_preferencia_seleccionada():
-            self.preference = self.preference_var.get()
-            print(f"El usuario prefiere: {self.preference}")
+            self.preferencia = self.preferencia_var.get()
+            print(f"El usuario prefiere: {self.preferencia}")
 
             # Cerrar la ventana emergente
-            preferences_ventana.destroy()
+            ventana_preferencias.destroy()
 
             # Continuar con otras acciones después de que el usuario haya ingresado las coordenadas y preferencias
             self.calculo_y_muestra_del_mejor_camino()
 
         # Etiqueta y botones de opción
-        etiqueta = Label(preferences_ventana, text="¿Qué es más importante para ti?")
+        etiqueta = Label(ventana_preferencias, text="¿Qué es más importante para ti?")
         etiqueta.pack(pady=10)
 
-        boton_duracion = Radiobutton(preferences_ventana, text="Duración del viaje", variable=self.preference_var, value="Duración del viaje")
+        boton_duracion = Radiobutton(ventana_preferencias, text="Duración del viaje", variable=self.preferencia_var, value="Duración del viaje")
         boton_duracion.pack()
 
-        boton_transbordos = Radiobutton(preferences_ventana, text="Número de Transbordos", variable=self.preference_var, value="No transbordos")
+        boton_transbordos = Radiobutton(ventana_preferencias, text="Número de Transbordos", variable=self.preferencia_var, value="No transbordos")
         boton_transbordos.pack()
 
         # Botón para confirmar la elección
-        boton_confirmacion = Button(preferences_ventana, text="Confirmar", command=manejo_preferencia_seleccionada)
+        boton_confirmacion = Button(ventana_preferencias, text="Confirmar", command=manejo_preferencia_seleccionada)
         boton_confirmacion.pack(pady=10)
     def mostrar_mensaje_en_etiqueta(self, mensaje):
         # Crear una nueva ventana para mostrar el mensaje
@@ -286,10 +287,7 @@ class MapApp:
 
         # Iniciar el bucle principal de la ventana de mensaje
         mensaje_ventana.mainloop()
-        #Cierra el programa
-    def cerrar_app(self):
-        self.root.quit()
-        self.root.destroy()
+
     def enseñar_segunda_imagen(self, second_map_path):
         try:
             # Abrir la segunda imagen desde el directorio
@@ -312,14 +310,17 @@ class MapApp:
             print(f"Error al cargar la segunda imagen desde el directorio: {e}")
 
     def calculo_y_muestra_del_mejor_camino(self):
+        #Si se han seleccionado las estaciones en el mapa se hace la conversion de coordenadas a estacioness
         if self.origen_coordenadas is not None and self.destino_coordenadas is not None:
             self.origen=self.coordenadas_a_estaciones(self.origen_coordenadas)
             self.destino=self.coordenadas_a_estaciones(self.destino_coordenadas)
             print("Origen:", self.origen)
             print("Destino", self.destino)
-            ini_instance = ini.Ini(self.origen, self.destino, self.preference ,self.departure_time)
+            #Se ejecuta el algoritmo
+            ini_instance = ini.Ini(self.origen, self.destino, self.preferencia ,self.hora_de_partida)
         else:
-            ini_instance = ini.Ini(self.origen, self.destino, self.preference ,self.departure_time)
+            #Se ejecuta el algoritmo
+            ini_instance = ini.Ini(self.origen, self.destino, self.preferencia ,self.hora_de_partida)
 
         if(ini_instance.ini()==-1):
             # Mostrar el mensaje sobre el estado del metro
@@ -328,8 +329,6 @@ class MapApp:
         # Mostrar la segunda imagen después de cerrar la aplicación principal
         second_map_path = "../IA/Lyon/recorrido_final.png"
         self.enseñar_segunda_imagen(second_map_path)
-        # Cerrar el bucle principal de la ventana principal
-        self.cerrar_app()
 
 
 
