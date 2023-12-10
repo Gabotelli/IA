@@ -14,51 +14,51 @@ class MapApp:
         self.root.title("Mapa Interactivo")
 
         # Crear un marco principal
-        self.main_frame = tk.Frame(root)
-        self.main_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.main_marco = tk.Frame(root)
+        self.main_marco.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # Crear un marco para contener la imagen
-        self.image_frame = tk.Frame(self.main_frame)
-        self.image_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.imagen_marco = tk.Frame(self.main_marco)
+        self.imagen_marco.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Crear un lienzo (Canvas) para mostrar la imagen
-        self.canvas = tk.Canvas(self.image_frame)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
-
+        self.lienzo = tk.Canvas(self.imagen_marco)
+        self.lienzo.pack(fill=tk.BOTH, expand=True)
+        # Agregar un botón para ingresar la hora de salida
+        boton_introducir_tiempo = Button(self.main_marco, text="Hora de Salida", command=self.introducir_tiempo_salida)
+        boton_introducir_tiempo.pack(pady=10)
+        # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
+        boton_preguntar_metodo = Button(self.main_marco, text="¿Cómo quieres ingresar el destino?", command=self.metodo_de_introduccion)
+        boton_preguntar_metodo.pack(pady=10)
         # Coordenadas del origen y destino ingresadas por el usuario
-        self.origin_coordinates = None
-        self.destination_coordinates = None
+        self.origen_coordenadas = None
+        self.destino_coordenadas = None
         #Origen y destino
-        self.origin=""
-        self.destination=""
+        self.origen=""
+        self.destino=""
         # Cuadros de entrada para las coordenadas
-        self.origin_entry = Entry(self.main_frame, width=10)
-        self.origin_entry.pack(pady=5)
+        self.origen_entry = Entry(self.main_marco, width=10)
+        self.origen_entry.pack(pady=5)
 
-        self.destination_entry = Entry(self.main_frame, width=10)
-        self.destination_entry.pack(pady=5)
+        self.destino_entry = Entry(self.main_marco, width=10)
+        self.destino_entry.pack(pady=5)
 
         # Agregar etiquetas para mostrar mensajes
-        self.origin_label = tk.Label(self.main_frame, text="Origen:", font=("Arial", 14), bg="white")
-        self.origin_label.pack(pady=5)
+        self.origen_etiqueta = tk.Label(self.main_marco, text="Origen:", font=("Arial", 14), bg="white")
+        self.origen_etiqueta.pack(pady=5)
 
-        self.destination_label = tk.Label(self.main_frame, text="Destino:", font=("Arial", 14), bg="white")
-        self.destination_label.pack(pady=5)
+        self.destino_etiqueta = tk.Label(self.main_marco, text="Destino:", font=("Arial", 14), bg="white")
+        self.destino_etiqueta.pack(pady=5)
         
         # Preferencia del usuario
-        self.preference_var = None
-        self.preference = None
+        self.preferencia_var = None
+        self.preferencia = None
         #Variable hora de salida
-        self.departure_time=None
-        # Agregar un botón para ingresar la hora de salida
-        enter_time_button = Button(self.main_frame, text="Hora de Salida", command=self.enter_departure_time)
-        enter_time_button.pack(pady=10)
-        # Botón para preguntar al usuario si quiere ingresar manualmente o seleccionar en el mapa
-        ask_method_button = Button(self.main_frame, text="¿Cómo quieres ingresar el destino?", command=self.ask_input_method)
-        ask_method_button.pack(pady=10)
+        self.hora_de_partida=None
 
         # Intentar cargar automáticamente la imagen del mapa al iniciar
-        self.load_map(map_url)
+        self.cargar_mapa(map_url)
+    #Asocia a cada estacion un rango de coordenadas donde ser seleccionada
     def coordenadas_a_estaciones(self,coords):
         c1=coords[0]
         c2=coords[1]
@@ -144,200 +144,191 @@ class MapApp:
         elif c1<582 and c1>562 and c2<250 and c2>230:
             res="Vaulx-en-Velin La Soie"
         return res
-    def load_map(self, map_path):
+    def cargar_mapa(self, map_path):
         try:
-            # Open the image from the directory
-            image = Image.open(map_path)
-            self.map_image = ImageTk.PhotoImage(image)
-            self.canvas.config(width=image.width, height=image.height)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.map_image)
+            # Abre la imagen desde el directorio
+            imagen = Image.open(map_path)
+            self.imagen_mapa = ImageTk.PhotoImage(imagen)
+            self.lienzo.config(width=imagen.width, height=imagen.height)
+            self.lienzo.create_image(0, 0, anchor=tk.NW, image=self.imagen_mapa)
         except Exception as e:
             print(f"Error al cargar la imagen desde el directorio: {e}")
 
-    def ask_input_method(self):
+    def metodo_de_introduccion(self):
         # Crear una ventana emergente para preguntar al usuario cómo quiere ingresar el destino
-        method_window = Toplevel(self.root)
-        method_window.title("Método de Ingreso")
+        method_ventana = Toplevel(self.root)
+        method_ventana.title("Método de Ingreso")
 
         # Variables de control para los botones de opción
-        input_method_var = StringVar()
+        metodo_introducido_var = StringVar()
 
         # Función para manejar la elección del usuario
-        def on_input_method_selected():
-            input_method = input_method_var.get()
-            print(f"Usuario elige ingresar: {input_method}")
+        def metodo_seleccionado():
+            metodo_introducido = metodo_introducido_var.get()
+            print(f"Usuario elige ingresar: {metodo_introducido}")
 
             # Cerrar la ventana emergente
-            method_window.destroy()
+            method_ventana.destroy()
 
             # Procesar la elección del usuario y continuar
-            if input_method == "manual":
-                self.enter_coordinates_manually()
-            elif input_method == "map":
-                self.select_coordinates_on_map()
+            if metodo_introducido == "manual":
+                self.introducir_coordenadas_manualmente()
+            elif metodo_introducido == "map":
+                self.seleccionar_coordenadas_en_el_map()
 
         # Etiqueta y botones de opción
-        label = Label(method_window, text="¿Cómo quieres ingresar el destino?")
-        label.pack(pady=10)
+        etiqueta = Label(method_ventana, text="¿Cómo quieres ingresar el destino?")
+        etiqueta.pack(pady=10)
 
-        manual_button = Radiobutton(method_window, text="Manualmente", variable=input_method_var, value="manual")
+        manual_button = Radiobutton(method_ventana, text="Manualmente", variable=metodo_introducido_var, value="manual")
         manual_button.pack()
 
-        map_button = Radiobutton(method_window, text="En el mapa", variable=input_method_var, value="map")
+        map_button = Radiobutton(method_ventana, text="En el mapa", variable=metodo_introducido_var, value="map")
         map_button.pack()
 
         # Botón para confirmar la elección
-        confirm_button = Button(method_window, text="Continuar", command=on_input_method_selected)
+        confirm_button = Button(method_ventana, text="Continuar", command=metodo_seleccionado)
         confirm_button.pack(pady=10)
 
-    def enter_coordinates_manually(self):
+    def introducir_coordenadas_manualmente(self):
         # Habilitar los cuadros de entrada para ingresar manualmente
-        self.origin_entry.config(state=tk.NORMAL)
-        self.destination_entry.config(state=tk.NORMAL)
+        self.origen_entry.config(state=tk.NORMAL)
+        self.destino_entry.config(state=tk.NORMAL)
         # Botón para continuar después de ingresar manualmente
-        continue_button = Button(self.main_frame, text="Continuar", command=self.continue_after_manual_input)
+        continue_button = Button(self.main_marco, text="Continuar", command=self.continuar_despues_de_introducir_manualmente)
         continue_button.pack(pady=10)
 
-    def select_coordinates_on_map(self):
+    def seleccionar_coordenadas_en_el_map(self):
         # Deshabilitar los cuadros de entrada manual
-        self.origin_entry.config(state=tk.DISABLED)
-        self.destination_entry.config(state=tk.DISABLED)
+        self.origen_entry.config(state=tk.DISABLED)
+        self.destino_entry.config(state=tk.DISABLED)
 
         # Llamar a la función cuando se hace clic en el lienzo
-        self.canvas.bind("<Button-1>", self.on_canvas_click)
+        self.lienzo.bind("<Button-1>", self.click_en_la_imagen)
 
-    def on_canvas_click(self, event):
+    def click_en_la_imagen(self, event):
         # Obtener las coordenadas del clic en relación con la imagen
         x, y = event.x, event.y
 
-        if self.origin_coordinates is None:
+        if self.origen_coordenadas is None:
             # Si aún no se ha seleccionado el origen, hazlo
-            self.origin_coordinates = (x, y)
-            self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="blue", outline="blue")
-            self.origin_label.config(text=f"Origen:"+self.coordenadas_a_estaciones(self.origin_coordinates))
-        elif self.destination_coordinates is None:
+            self.origen_coordenadas = (x, y)
+            self.lienzo.create_oval(x - 5, y - 5, x + 5, y + 5, fill="blue", outline="blue")
+            self.origen_etiqueta.config(text=f"Origen:"+self.coordenadas_a_estaciones(self.origen_coordenadas))
+        elif self.destino_coordenadas is None:
             # Si ya se ha seleccionado el origen, selecciona el destino
-            self.destination_coordinates = (x, y)
-            self.canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", outline="red")
-            self.destination_label.config(text=f"Destino:"+self.coordenadas_a_estaciones(self.destination_coordinates))
+            self.destino_coordenadas = (x, y)
+            self.lienzo.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", outline="red")
+            self.destino_etiqueta.config(text=f"Destino:"+self.coordenadas_a_estaciones(self.destino_coordenadas))
 
             # Preguntar al usuario sobre sus preferencias
-            self.ask_user_preferences()
+            self.pregunta_preferencias_usuario()
 
-    def enter_departure_time(self):
+    def introducir_tiempo_salida(self):
         # Pedir al usuario que ingrese la hora de salida
-        departure_time =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+        hora_de_partida =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
 
         # Convertir la hora ingresada a un objeto datetime
-        self.departure_time = dt.datetime(2003, 6, 18, int(departure_time[0:2]), int(departure_time[3:5]), 0)
+        self.hora_de_partida = dt.datetime(2003, 6, 18, int(hora_de_partida[0:2]), int(hora_de_partida[3:5]), 0)
+        print("La hora seleccionada es ",self.hora_de_partida)
 
         # Aquí puedes agregar más funcionalidades según tus necesidades.
-    def continue_after_manual_input(self):
+    def continuar_despues_de_introducir_manualmente(self):
         # Guardar las coordenadas ingresadas manualmente
-        self.origin = self.origin_entry.get()
-        self.destination = self.destination_entry.get()
+        self.origen = self.origen_entry.get()
+        self.destino = self.destino_entry.get()
 
         # Mostrar las coordenadas ingresadas manualmente
-        print(f"Origen (manual): {self.origin}")
-        print(f"Destino (manual): {self.destination}")
+        print(f"Origen (manual): {self.origen}")
+        print(f"Destino (manual): {self.destino}")
         # Continuar con otras acciones después de ingresar manualmente
-        self.ask_user_preferences()
+        self.pregunta_preferencias_usuario()
 
-    def ask_user_preferences(self):
+    def pregunta_preferencias_usuario(self):
         # Crear una ventana emergente para la pregunta
-        preferences_window = Toplevel(self.root)
-        preferences_window.title("Preferencias")
+        ventana_preferencias = Toplevel(self.root)
+        ventana_preferencias.title("Preferencias")
 
         # Variables de control para los botones de opción
-        self.preference_var = StringVar()
+        self.preferencia_var = StringVar()
 
         # Función para manejar la elección del usuario
-        def on_preference_selected():
-            self.preference = self.preference_var.get()
-            print(f"El usuario prefiere: {self.preference}")
-
-            # Puedes realizar acciones adicionales según la preferencia del usuario
-            # Por ejemplo, podrías planificar la ruta en función de su elección.
+        def manejo_preferencia_seleccionada():
+            self.preferencia = self.preferencia_var.get()
+            print(f"El usuario prefiere: {self.preferencia}")
 
             # Cerrar la ventana emergente
-            preferences_window.destroy()
+            ventana_preferencias.destroy()
 
             # Continuar con otras acciones después de que el usuario haya ingresado las coordenadas y preferencias
-            self.continue_after_preferences()
+            self.calculo_y_muestra_del_mejor_camino()
 
         # Etiqueta y botones de opción
-        label = Label(preferences_window, text="¿Qué es más importante para ti?")
-        label.pack(pady=10)
+        etiqueta = Label(ventana_preferencias, text="¿Qué es más importante para ti?")
+        etiqueta.pack(pady=10)
 
-        time_button = Radiobutton(preferences_window, text="Tiempo de salida", variable=self.preference_var, value="Tiempo de salida")
-        time_button.pack()
-        
-        transfersTime_button = Radiobutton(preferences_window, text="Tiempo entre transbordos", variable=self.preference_var, value="Tiempo entre transbordos")
-        transfersTime_button.pack()
+        boton_duracion = Radiobutton(ventana_preferencias, text="Duración del viaje", variable=self.preferencia_var, value="Duración del viaje")
+        boton_duracion.pack()
 
-        transfers_button = Radiobutton(preferences_window, text="Número de Transbordos", variable=self.preference_var, value="No transbordos")
-        transfers_button.pack()
+        boton_transbordos = Radiobutton(ventana_preferencias, text="Número de Transbordos", variable=self.preferencia_var, value="No transbordos")
+        boton_transbordos.pack()
 
         # Botón para confirmar la elección
-        confirm_button = Button(preferences_window, text="Confirmar", command=on_preference_selected)
-        confirm_button.pack(pady=10)
-    def show_message_in_label(self, message):
+        boton_confirmacion = Button(ventana_preferencias, text="Confirmar", command=manejo_preferencia_seleccionada)
+        boton_confirmacion.pack(pady=10)
+    def mostrar_mensaje_en_etiqueta(self, mensaje):
         # Crear una nueva ventana para mostrar el mensaje
-        message_window = Toplevel(self.root)
-        message_window.title("Mensaje")
+        mensaje_ventana = Toplevel(self.root)
+        mensaje_ventana.title("Mensaje")
 
         # Crear un Label para mostrar el mensaje
-        label = Label(message_window, text=message, font=("Arial", 14), bg="white")
-        label.pack(pady=10)
+        etiqueta = Label(mensaje_ventana, text=mensaje, font=("Arial", 14), bg="white")
+        etiqueta.pack(pady=10)
 
         # Iniciar el bucle principal de la ventana de mensaje
-        message_window.mainloop()
-        # Agregar este método a la clase MapApp
-    def close_app(self):
-        self.root.quit()
-        self.root.destroy()
-    def show_second_image(self, second_map_path):
+        mensaje_ventana.mainloop()
+
+    def enseñar_segunda_imagen(self, second_map_path):
         try:
             # Abrir la segunda imagen desde el directorio
-            second_image = Image.open(second_map_path)
-            second_map_image = ImageTk.PhotoImage(second_image)
+            segunda_imagen = Image.open(second_map_path)
+            mapa_segunda_imagen = ImageTk.PhotoImage(segunda_imagen)
 
             # Crear una nueva ventana para la segunda imagen
-            second_image_window = Toplevel(self.root)
-            second_image_window.title("Segunda Imagen")
+            ventana_segunda_imagen = Toplevel(self.root)
+            ventana_segunda_imagen.title("Segunda Imagen")
 
             # Crear un lienzo (Canvas) para mostrar la segunda imagen
-            second_canvas = tk.Canvas(second_image_window)
-            second_canvas.pack(fill=tk.BOTH, expand=True)
-            second_canvas.config(width=second_image.width, height=second_image.height)
-            second_canvas.create_image(0, 0, anchor=tk.NW, image=second_map_image)
+            segundo_lienzo = tk.Canvas(ventana_segunda_imagen)
+            segundo_lienzo.pack(fill=tk.BOTH, expand=True)
+            segundo_lienzo.config(width=segunda_imagen.width, height=segunda_imagen.height)
+            segundo_lienzo.create_image(0, 0, anchor=tk.NW, image=mapa_segunda_imagen)
 
             # Iniciar el bucle principal de la ventana de la segunda imagen
-            second_image_window.mainloop()
+            ventana_segunda_imagen.mainloop()
         except Exception as e:
             print(f"Error al cargar la segunda imagen desde el directorio: {e}")
 
-    def continue_after_preferences(self):
-        # Aquí puedes agregar acciones adicionales que deseas realizar después de que el usuario haya ingresado las coordenadas y preferencias.
-        # Falta preguntar por el tiempo entre transbordos para poder pasarlo a la clase ini
-
-        if self.origin_coordinates is not None and self.destination_coordinates is not None:
-            print("Origen:", self.coordenadas_a_estaciones(self.origin_coordinates))
-            print("Destino", self.coordenadas_a_estaciones(self.destination_coordinates))
-            ini_instance = ini.Ini(self.coordenadas_a_estaciones(self.origin_coordinates), self.coordenadas_a_estaciones(self.destination_coordinates), self.preference ,self.departure_time) #aqui hay que poner la preferencia del usuario
+    def calculo_y_muestra_del_mejor_camino(self):
+        #Si se han seleccionado las estaciones en el mapa se hace la conversion de coordenadas a estacioness
+        if self.origen_coordenadas is not None and self.destino_coordenadas is not None:
+            self.origen=self.coordenadas_a_estaciones(self.origen_coordenadas)
+            self.destino=self.coordenadas_a_estaciones(self.destino_coordenadas)
+            print("Origen:", self.origen)
+            print("Destino", self.destino)
+            #Se ejecuta el algoritmo
+            ini_instance = ini.Ini(self.origen, self.destino, self.preferencia ,self.hora_de_partida)
         else:
-            ini_instance = ini.Ini(self.origin, self.destination, self.preference ,self.departure_time) #aqui hay que poner la preferencia del usuario
-        print("Continuar con otras acciones...")
-        #ini_instance = ini.Ini(self.origin_entry.get(), self.destination_entry.get(), self.preference, 20) #aqui hay que poner la preferencia del usuario
+            #Se ejecuta el algoritmo
+            ini_instance = ini.Ini(self.origen, self.destino, self.preferencia ,self.hora_de_partida)
+
         if(ini_instance.ini()==-1):
             # Mostrar el mensaje sobre el estado del metro
-            metro_status_message ="El metro está cerrado a esta hora."
-            self.show_message_in_label(metro_status_message)
+            metro_status_mensaje ="El metro está cerrado a esta hora."
+            self.mostrar_mensaje_en_etiqueta(metro_status_mensaje)
         # Mostrar la segunda imagen después de cerrar la aplicación principal
         second_map_path = "../IA/Lyon/recorrido_final.png"
-        self.show_second_image(second_map_path)
-        # Cerrar el bucle principal de la ventana principal
-        self.close_app()
+        self.enseñar_segunda_imagen(second_map_path)
 
 
 
