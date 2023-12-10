@@ -76,11 +76,13 @@ class Ini:
                 #Se calcula el tiempo que hay que esperar a que llegue el tren calculando el horario del siguiente tren respecto del la hora actual
                 espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-min
                 #En caso de estar activo el modo "no transbordos" y tener que hacer un transbordo se suma la penalizacion
-                if(self.modoObjetivo == "No transbordos" and (len(set(G.nodes[nodoObjetivo]['linea']) & set(G.nodes[nodoHijo]['linea']))==0 and lineaActual is not None)):
+                if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
                     tiempo += 1000
                     nTransbordos += 1
                 else:
                     tiempo += espera
+            elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea'] and self.modoObjetivo == "No transbordos"):
+                tiempo += 500
             return [tiempo, nTransbordos, dt.timedelta(minutes = espera)]
         #Fin heuristic
 
@@ -195,7 +197,7 @@ class Ini:
 
         pos = nx.get_node_attributes(G, 'pos')
         plt.figure(figsize=(12, 9))
-        nx.draw(G, pos, with_labels=True, node_color="#95B634", font_size = 7)
+        nx.draw(G, pos, with_labels=True, node_color="#f86e00", font_size = 7)
         path_edges = [(path[i], path[i+1]) for i in range(len(path)-1)]
         nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
         plt.xlim(0, 6)
