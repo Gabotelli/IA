@@ -76,13 +76,11 @@ class Ini:
                 #Se calcula el tiempo que hay que esperar a que llegue el tren calculando el horario del siguiente tren respecto del la hora actual
                 espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-min
                 #En caso de estar activo el modo "no transbordos" y tener que hacer un transbordo se suma la penalizacion
-                if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
+                if(self.modoObjetivo == "No transbordos" and (len(set(G.nodes[nodoObjetivo]['linea']) & set(G.nodes[nodoHijo]['linea']))==0 and lineaActual is not None)):
                     tiempo += 1000
                     nTransbordos += 1
                 else:
                     tiempo += espera
-            elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea'] and self.modoObjetivo == "No transbordos"):
-                tiempo += 500
             return [tiempo, nTransbordos, dt.timedelta(minutes = espera)]
         #Fin heuristic
 
