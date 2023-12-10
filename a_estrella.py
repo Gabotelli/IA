@@ -2,7 +2,7 @@ from heapq import heappop, heappush
 import datetime as dt
 
 def a_star(grafo, nodoInicio, nodoObjetivo, heuristica, horaSalida):
-    listaBusqueda = [(0, None, nodoInicio, 0, horaSalida)] #CosteF, Linea, Nodo, transbordos
+    listaBusqueda = [(0, None, nodoInicio, 0, horaSalida)] #CosteF, Linea, Nodo, transbordos, hora
     costeG = {nodoInicio: 0}
     costeF = {nodoInicio: 0}
     caminoAnterior = {nodoInicio: None}
