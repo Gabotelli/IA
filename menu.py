@@ -60,7 +60,9 @@ class MapApp:
         # Etiqueta para mostrar la hora de salida
         self.hora_etiqueta = tk.Label(self.main_marco, text="Hora de Salida: ", font=("Arial", 14), bg="white")
         self.hora_etiqueta.pack(pady=5)
-
+        # Botón para cerrar todas las ventanas
+        cerrar_botón = Button(self.main_marco, text="Cerrar todo", command=self.cerrar_todo)
+        cerrar_botón.pack(pady=10)
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.cargar_mapa(map_url)
     #Asocia a cada estacion un rango de coordenadas donde ser seleccionada
@@ -311,12 +313,13 @@ class MapApp:
             segundo_lienzo.pack(fill=tk.BOTH, expand=True)
             segundo_lienzo.config(width=segunda_imagen.width, height=segunda_imagen.height)
             segundo_lienzo.create_image(0, 0, anchor=tk.NW, image=mapa_segunda_imagen)
-
             # Iniciar el bucle principal de la ventana de la segunda imagen
             ventana_segunda_imagen.mainloop()
         except Exception as e:
             print(f"Error al cargar la segunda imagen desde el directorio: {e}")
-
+    def cerrar_todo(self):
+        # Cerrar la ventana principal
+        self.root.destroy()
     def calculo_y_muestra_del_mejor_camino(self):
         #Si se han seleccionado las estaciones en el mapa se hace la conversion de coordenadas a estacioness
         if self.origen_coordenadas is not None and self.destino_coordenadas is not None:
