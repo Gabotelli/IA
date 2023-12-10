@@ -344,7 +344,7 @@ class MapApp:
 
 
 # Imagen del metro de Lyon
-map_path = "../IA/Lyon/metro_lyon.png"
+map_path = "Lyon/metro_lyon.png"
 
 # Crear la ventana principal de la aplicación
 root = tk.Tk()
