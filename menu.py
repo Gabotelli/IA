@@ -56,6 +56,10 @@ class MapApp:
         #Variable hora de salida
         self.hora_de_partida=None
 
+        # Etiqueta para mostrar la hora de salida
+        self.hora_etiqueta = tk.Label(self.main_marco, text="Hora de Salida: ", font=("Arial", 14), bg="white")
+        self.hora_etiqueta.pack(pady=5)
+
         # Intentar cargar automáticamente la imagen del mapa al iniciar
         self.cargar_mapa(map_url)
     #Asocia a cada estacion un rango de coordenadas donde ser seleccionada
@@ -226,11 +230,14 @@ class MapApp:
 
     def introducir_tiempo_salida(self):
         # Pedir al usuario que ingrese la hora de salida
-        hora_de_partida =askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
+        hora_de_partida = askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
 
         # Convertir la hora ingresada a un objeto datetime
         self.hora_de_partida = dt.datetime(2003, 6, 18, int(hora_de_partida[0:2]), int(hora_de_partida[3:5]), 0)
-        print("La hora seleccionada es ",self.hora_de_partida)
+        print("La hora seleccionada es ", self.hora_de_partida)
+
+        # Mostrar la hora de salida en la etiqueta
+        self.hora_etiqueta.config(text=f"Hora de Salida: {hora_de_partida}")
 
         # Aquí puedes agregar más funcionalidades según tus necesidades.
     def continuar_despues_de_introducir_manualmente(self):
