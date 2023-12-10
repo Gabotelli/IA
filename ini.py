@@ -195,7 +195,7 @@ class Ini:
 
         pos = nx.get_node_attributes(G, 'pos')
         plt.figure(figsize=(12, 9))
-        nx.draw(G, pos, with_labels=True, node_color="#f86e00", font_size = 7)
+        nx.draw(G, pos, with_labels=True, node_color="#95B634", font_size = 7)
         path_edges = [(path[i], path[i+1]) for i in range(len(path)-1)]
         nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
         plt.xlim(0, 6)
