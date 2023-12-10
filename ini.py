@@ -2,8 +2,8 @@
 from datetime import datetime, timedelta
 from math import ceil
 
-import matplotlib.pyplot as plt
-import networkx as nx
+from matplotlib.pyplot import figure, xlim, ylim, text, savefig
+from networkx import Graph, get_node_attributes, draw ,draw_networkx_edges
 
 from a_estrella import a_star
 
@@ -88,7 +88,7 @@ class Ini:
 
 
         self.sentido = False
-        G = nx.Graph()
+        G = Graph()
         #linea A roja
         G.add_node("Perrache", linea = ["A"], pos = (1.339, 3.366))
         G.add_node("Ampère Victor Hugo", linea = ["A"], pos = (1.442, 3.683))
@@ -195,14 +195,14 @@ class Ini:
             return -1
         print("Path: ", path)
 
-        pos = nx.get_node_attributes(G, 'pos')
-        plt.figure(figsize=(12, 9))
-        nx.draw(G, pos, with_labels=True, node_color="#f86e00", font_size = 7)
+        pos = get_node_attributes(G, 'pos')
+        figure(figsize=(12, 9))
+        draw(G, pos, with_labels=True, node_color="#f86e00", font_size = 7)
         path_edges = [(path[i], path[i+1]) for i in range(len(path)-1)]
-        nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
-        plt.xlim(0, 6)
-        plt.ylim(0, 7)
-        plt.text(4, 3.5, "Hora de llegada:\n" + str(horaLlegada.time())[0:5], fontsize = 20)
+        draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
+        xlim(0, 6)
+        ylim(0, 7)
+        text(4, 3.5, "Hora de llegada:\n" + str(horaLlegada.time())[0:5], fontsize = 20)
         # Guardar la imagen
-        plt.savefig("../IA/Lyon/recorrido_final.png")
+        savefig("../IA/Lyon/recorrido_final.png")
         return 0
