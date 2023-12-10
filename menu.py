@@ -1,4 +1,5 @@
-import datetime as dt
+
+from datetime import datetime
 import tkinter as tk
 from tkinter import Button, Entry, Label, Radiobutton, StringVar, Toplevel
 from tkinter.simpledialog import askstring
@@ -233,7 +234,7 @@ class MapApp:
         hora_de_partida = askstring("Hora de Salida", "Ingrese la hora de salida (formato HH:MM):")
 
         # Convertir la hora ingresada a un objeto datetime
-        self.hora_de_partida = dt.datetime(2003, 6, 18, int(hora_de_partida[0:2]), int(hora_de_partida[3:5]), 0)
+        self.hora_de_partida = datetime(2003, 6, 18, int(hora_de_partida[0:2]), int(hora_de_partida[3:5]), 0)
         print("La hora seleccionada es ", self.hora_de_partida)
 
         # Mostrar la hora de salida en la etiqueta

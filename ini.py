@@ -1,6 +1,6 @@
-import datetime as dt
-import math as m
-import time as t
+
+from datetime import datetime, timedelta
+from math import ceil
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -22,7 +22,7 @@ class Ini:
         if(self.horaSalida.hour < 6):
             return -1
         if (self.horaSalida.hour < 7) : #lo cambias aqui
-            self.horaSalida = dt.datetime(2003, 6, 18, 7, 0, 0)
+            self.horaSalida = datetime(2003, 6, 18, 7, 0, 0)
         def heuristic(nodoHijo, nodoObjetivo, nodoPadre, lineaActual, nTransbordos, hora):
             #Calcula la distacia recta entre dos nodos en el mapa
             (x1, y1) = G.nodes[nodoObjetivo]['pos']
@@ -74,7 +74,7 @@ class Ini:
                 elif hor!=self.horaInicio:
                     desfase %= frecuencia
                 #Se calcula el tiempo que hay que esperar a que llegue el tren calculando el horario del siguiente tren respecto del la hora actual
-                espera = m.ceil((min-desfase)/frecuencia)*frecuencia+desfase-min
+                espera = ceil((min-desfase)/frecuencia)*frecuencia+desfase-min
                 #En caso de estar activo el modo "no transbordos" y tener que hacer un transbordo se suma la penalizacion
                 if(self.modoObjetivo == "No transbordos" and lineaActual is not None):
                     tiempo += 1000
@@ -83,7 +83,7 @@ class Ini:
                     tiempo += espera
             elif(len(G.nodes[nodoHijo]['linea']) != 1 and lineaActual not in G.nodes[nodoObjetivo]['linea'] and self.modoObjetivo == "No transbordos"):
                 tiempo += 500
-            return [tiempo, nTransbordos, dt.timedelta(minutes = espera)]
+            return [tiempo, nTransbordos, timedelta(minutes = espera)]
         #Fin heuristic
 
 
