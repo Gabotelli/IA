@@ -1,0 +1,11 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Generated route visualization
+Lyon/recorrido_final.png
